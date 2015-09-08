@@ -1,7 +1,16 @@
 @main-color: #B51800;
+@item-color: #EEEEEE;
+@item-hover-color: #CCCCCC;
+@text-color: #666666;
 
 html, body, .container-fluid.wrapper, .row.wrapper {
     height: 100%;
+}
+
+a:hover
+{
+	text-decoration: none !important;
+	cursor: pointer;
 }
 
 h2
@@ -10,20 +19,74 @@ h2
 	font-size: 16pt;
 }
 
-.sidebar
-{
-	position:relative;	
-	background-color: @main-color;
-	height:100%;
-}
-
 .sidebar .nav-sidebar
 {
-	padding:20px;
+	padding:10px 20px 20px 20px;
 }
 
-.main-content
+@media (min-width: 768px) 
+{    
+	.sidebar
+	{
+		position:relative;	
+		background-color: @main-color;
+		height:100%;
+	}
+	.main-content
+	{
+		height:100% !important;
+		margin: 20px;
+	}
+	.sidebar .nav-sidebar
+	{
+		padding:10px 20px 20px 20px;
+	}
+}
+
+@media (max-width: 768px) {
+    .sidebar
+	{
+		background-color: @main-color;
+	}
+
+	.main-content
+	{
+		height:auto;
+		margin: 20px;
+	}
+	.sidebar .nav-sidebar
+	{
+		padding:5px 10px 10px 10px;
+	}
+}
+
+.item
 {
-	height:100% !important;
-	margin: 20px;
+	background-color: @item-color;
+	margin:5px;
+
+	p
+	{
+		text-decoration: none;
+		color: @text-color;
+	}
+	.caption
+	{
+		padding: 10px;
+	}
+}
+.item:hover
+{
+	background-color: @item-hover-color;
+
+	p
+	{
+		text-decoration: none !important;
+		color: @text-color;
+	}
+}
+
+.datetime
+{
+	display:none;
 }

@@ -1,12 +1,19 @@
-@(firstName: String)
+@(callouts: Seq[Callout], contributions: Seq[Contribution])
 
-@main("First Responder") {
-
-  <header><h1>First Responder <small>Howdy, @firstName!</small></h1></header>
+@main("Dashboard", callouts) {
 
   <div class="row">
     <div class="col-md-12">
-      TODO everything!
+    	<div class="row">
+	      @contributions.map { c =>
+			<a class="item col-xs-12 col-md-4 col-lg-4">
+				<div class="trail-image"></div>
+				<div class="caption">
+				<p>@c.body</p>
+				</div>
+		    </a>  
+		  } 
+		</div>
     </div><!-- end of col-md-12 -->
   </div><!-- end of row -->
 

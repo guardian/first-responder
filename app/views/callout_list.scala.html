@@ -1,0 +1,15 @@
+@(callouts: Seq[Callout])
+
+  <div>
+  <ul class="nav nav-stacked">
+  @callouts.map { c =>
+	<li>
+	<a>
+		<span>#@c.hashtag</span>
+		<span>@c.description</span>
+		<span class="datetime">@c.created</span>
+    </a>
+	</li>  
+  } 
+  </ul>
+  </div>
