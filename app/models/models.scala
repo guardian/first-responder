@@ -60,6 +60,7 @@ case class Contribution(
   id: String,
   contributor: Contributor,
   hashtag: String,
+  subject: Option[String],
   body: String, // TODO for FormStack, just dump all Qs and As into the body?
   attachments: Seq[Attachment])
 object Contribution {

@@ -27,7 +27,8 @@ object FirstResponderBuild extends Build {
         "com.amazonaws" % "aws-java-sdk-dynamodb" % Versions.awsSdk,
         "com.amazonaws" % "aws-java-sdk-s3" % Versions.awsSdk,
         "com.beachape" %% "enumeratum-play" % "1.3.1",
-        "com.gu" %% "play-googleauth" % "0.3.1"
+        "com.gu" %% "play-googleauth" % "0.3.1",
+        "org.scalatestplus" %% "play" % "1.1.1" % "test"
       ),
       routesGenerator := InjectedRoutesGenerator,
       riffRaffPackageType := (packageZipTarball in config("universal")).value
