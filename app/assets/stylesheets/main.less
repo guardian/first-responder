@@ -13,6 +13,13 @@ a:hover
 	cursor: pointer;
 }
 
+h1
+{
+	color: @text-color;
+	font-size: 16pt;
+	margin-bottom:25px;
+}
+
 h2
 {
 	color:#FFFFFF;
@@ -62,9 +69,6 @@ h2
 
 .item
 {
-	background-color: @item-color;
-	margin:5px;
-
 	p
 	{
 		text-decoration: none;
@@ -77,16 +81,45 @@ h2
 }
 .item:hover
 {
-	background-color: @item-hover-color;
-
 	p
 	{
 		text-decoration: none !important;
 		color: @text-color;
 	}
+	.item-content
+	{
+		background-color: @item-hover-color;
+	}
+}
+
+.item-content
+{
+	background-color: @item-color;
+	padding: 5px;
+	margin-bottom:10px;
 }
 
 .datetime
 {
 	display:none;
+}
+
+.nav.nav-sidebar li a
+{
+	color: #FFFFFF;
+	padding: 0px;
+	margin-bottom:10px;
+}
+
+.nav.nav-sidebar li a:hover
+{
+	color: #FFFFFF;
+	background: none !important;
+}
+
+.action-bar
+{
+	position: fixed;
+	height: 50px;
+	bottom: 0px;
 }

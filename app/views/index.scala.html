@@ -1,15 +1,17 @@
-@(callouts: Seq[Callout], contributions: Seq[Contribution])
+@(calloutName: String, callouts: Seq[Callout], contributions: Seq[Contribution])
 
-@main("Dashboard", callouts) {
-
+@main("Callout - " + calloutName, callouts) {
   <div class="row">
     <div class="col-md-12">
+    	<h1>#@calloutName</h1>
     	<div class="row">
 	      @contributions.map { c =>
-			<a class="item col-xs-12 col-md-4 col-lg-4">
+			<a class="item col-xs-12 col-md-4 col-lg-4" href="/callout/@calloutName/contribution/@c.id">
+				<div class="item-content">
 				<div class="trail-image"></div>
 				<div class="caption">
 				<p>@c.body</p>
+				</div>
 				</div>
 		    </a>  
 		  } 

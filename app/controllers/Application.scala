@@ -12,10 +12,32 @@ class Application(val authConfig: GoogleAuthConfig) extends Controller with Auth
 
   def index = AuthAction { request =>
 
+    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
+
+    Ok(views.html.index("", callouts, Nil))
+  }
+
+  def showCallout(hashtag: String) = AuthAction { request =>
+
     // Stub callouts and contributions
     val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
 
-    Ok(views.html.index(callouts, Nil))
+    val contributions = Seq(
+      new Contribution("1", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester", Nil),
+      new Contribution("2", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester 2", Nil),
+      new Contribution("2", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester 3", Nil)
+    )
+
+    Ok(views.html.index(hashtag, callouts, contributions))
+  }
+
+  def showContribution(hashtag: String, id: Int) = AuthAction { request =>
+
+    // Stub callouts and contributions
+    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
+    val contribution = new Contribution("1", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester", Nil)
+
+    Ok(views.html.contribution(hashtag, callouts, contribution))
   }
 
   def healthcheck = Action {

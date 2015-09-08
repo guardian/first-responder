@@ -1,13 +1,25 @@
-@(callouts: Seq[Callout],contribution: Contribution)
+@(calloutName: String, callouts: Seq[Callout], c: Contribution)
 
-@main("Contribution", callouts) {
+@main("Callout " + calloutName, callouts) {
 
   <div class="row">
     <div class="col-md-12">
     	<div class="row">
-	    
+    		<div class="contribution">
+		    	<div class="email">@c.contributor.email</div>
+		    	<div class="subject">@c.subject</div>
+		    	<div class="body">@c.body</div>
+	    	</div>
+
+
 		</div>
     </div><!-- end of col-md-12 -->
   </div><!-- end of row -->
-
+  <div class="row action-bar">
+    <div class="col-md-12">
+    	<div class="action-buttons">
+  			<a href="/callout/@calloutName" class="btn btn-default">Back to contributions</a>
+  		</div>
+  	</div><!-- end of col-md-12 -->
+  </div><!-- end of row -->
 }
