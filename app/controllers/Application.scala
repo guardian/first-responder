@@ -15,12 +15,7 @@ class Application(val authConfig: GoogleAuthConfig) extends Controller with Auth
     // Stub callouts and contributions
     val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
 
-    val contributions = Seq(
-      new Contribution("1", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", "Tester", Nil),
-      new Contribution("2", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", "Tester 2", Nil)
-    )
-
-    Ok(views.html.index(callouts, contributions))
+    Ok(views.html.index(callouts, Nil))
   }
 
   def healthcheck = Action {
