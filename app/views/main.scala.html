@@ -11,10 +11,23 @@
         
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
     </head>
     <body>
-      <div class="container">
-        @content
+      <div class="container-fluid wrapper">
+      <div class="row wrapper">
+        <div class="col-sm-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <h2>Open Callouts</h2>
+            <!-- Callout list -->
+          </ul>
+        </div>
+        <div class="col-sm-10 main">
+          <div class="main-content">
+                @content
+          </div>
+        </div>
       </div>
+    </div>
     </body>
 </html>
