@@ -10,7 +10,7 @@ object MailgunWebhookParser {
   case class AttachmentInfo(url: String, `content-type`: String)
   implicit val attachmentInfoReads = Json.reads[AttachmentInfo]
 
-  case class Payload(from: String, to: String, subject: String, body: String, attachments: Seq[AttachmentInfo])
+  case class Payload(from: String, to: String, subject: Option[String], body: String, attachments: Seq[AttachmentInfo])
 
   def parse(request: AnyContent): Either[String, Payload] = request.asFormUrlEncoded.fold[Either[String, Payload]] {
     Left("Failed to parse Mailgun Webhook as a URL-encoded form")
@@ -20,9 +20,12 @@ object MailgunWebhookParser {
     for {
       from <- firstValue("sender").right
       to <- firstValue("recipient").right
-      subject <- firstValue("subject").right
       body <- firstValue("body-plain").right
-    } yield Payload(from, to, subject, body, parseAttachments(form.get("attachments").flatMap(_.headOption)))
+    } yield {
+      val subject = form.get("subject").flatMap(_.headOption)
+      val attachments = parseAttachments(form.get("attachments").flatMap(_.headOption))
+      Payload(from, to, subject, body, attachments)
+    }
   }
 
   private def parseAttachments(field: Option[String]): Seq[AttachmentInfo] = {

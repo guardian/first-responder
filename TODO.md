@@ -19,6 +19,10 @@ Formstack integration
 
 ## UI
 
+## Auto-respond
+
+Could use mailgun to send the emails
+
 ## Chores
 
 config

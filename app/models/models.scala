@@ -57,7 +57,7 @@ object Attachment {
  * I wanted to call it Response but the inevitable name clashes would be too painful.
  */
 case class Contribution(
-  id: String,
+  id: String = java.util.UUID.randomUUID.toString,
   contributor: Contributor,
   hashtag: String,
   subject: Option[String],
@@ -65,4 +65,5 @@ case class Contribution(
   attachments: Seq[Attachment])
 object Contribution {
   implicit val jsonFormat = Json.format[Contribution]
+
 }
