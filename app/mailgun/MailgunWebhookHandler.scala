@@ -4,13 +4,13 @@ import java.io.ByteArrayInputStream
 
 import mailgun.MailgunWebhookParser.{ AttachmentInfo, Payload }
 import models._
-import play.api.libs.ws.WSAPI
+import play.api.libs.ws.{ WSAuthScheme, WSAPI }
 import store.{ Dynamo, S3 }
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class MailgunWebhookHandler(ws: WSAPI, s3: S3, dynamo: Dynamo) {
+class MailgunWebhookHandler(ws: WSAPI, mailgunApiKey: String, s3: S3, dynamo: Dynamo) {
 
   def handlePayload(payload: Payload): Future[Contribution] = {
     val fContribution = for {
@@ -37,11 +37,13 @@ class MailgunWebhookHandler(ws: WSAPI, s3: S3, dynamo: Dynamo) {
 
   private def copyAttachmentsToS3(attachmentInfos: Seq[AttachmentInfo]): Future[Seq[Attachment]] = {
     Future.traverse(attachmentInfos) { ai =>
-      ws.url(ai.url).get().flatMap { resp =>
-        // TODO could do some voodoo here to turn an Enumerator[Array[Byte]] into an InputStream for better memory perf
-        val inputStream = new ByteArrayInputStream(resp.bodyAsBytes)
-        s3.storeAttachment(inputStream, ai.`content-type`)
-      }
+      ws.url(ai.url)
+        .withAuth(username = "api", password = mailgunApiKey, scheme = WSAuthScheme.BASIC)
+        .get().flatMap { resp =>
+          // TODO could do some voodoo here to turn an Enumerator[Array[Byte]] into an InputStream for better memory perf
+          val inputStream = new ByteArrayInputStream(resp.bodyAsBytes)
+          s3.storeAttachment(inputStream, ai.`content-type`)
+        }
     }
   }
 

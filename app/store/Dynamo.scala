@@ -21,22 +21,26 @@ class Dynamo(db: DynamoDB, tableName: String) {
   }
 
   private def serialize(contribution: Contribution): Item = {
+    val attachments: java.util.List[String] =
+      contribution.attachments.map(a => Json.stringify(Json.toJson(a))).asJava
     new Item()
       .withPrimaryKey("hashtag", contribution.hashtag)
+      .withString("id", contribution.id)
       .withOptString("contributor_email", contribution.contributor.email)
       .withOptString("subject", contribution.subject)
       .withString("body", contribution.body)
-      .withJSON("attachments", Json.stringify(Json.toJson(contribution.attachments)))
+      .withList("attachments", attachments)
   }
 
   private def deserialize(item: Item): Contribution = {
+    val attachments = item.getList[String]("attachments").asScala.map(j => Json.parse(j).as[Attachment])
     Contribution(
-      id = item.getString("id"),
       hashtag = item.getString("hashtag"),
+      id = item.getString("id"),
       contributor = Contributor(email = Option(item.getString("contributor_email"))),
       subject = Option(item.getString("subject")),
       body = item.getString("body"),
-      attachments = Json.parse(item.getJSON("attachments")).as[Seq[Attachment]]
+      attachments = attachments
     )
   }
 
