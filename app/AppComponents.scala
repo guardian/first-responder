@@ -1,5 +1,5 @@
 import com.gu.googleauth.GoogleAuthConfig
-import controllers.{ Auth, Application }
+import controllers.{ Webhooks, Auth, Application }
 import models._
 import org.joda.time.Duration
 import play.api.ApplicationLoader.Context
@@ -21,11 +21,13 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
     maxAuthAge = Some(Duration.standardDays(90)),
     enforceValidity = true
   )
+  val mailgunApiKey = "foo" // TODO read from conf
 
   val appController = new Application(googleAuthConfig)
   val authController = new Auth(googleAuthConfig, wsApi)
+  val webhooksController = new Webhooks(mailgunApiKey)
 
   val assets = new controllers.Assets(httpErrorHandler)
-  val router: Router = new Routes(httpErrorHandler, appController, authController, assets)
+  val router: Router = new Routes(httpErrorHandler, appController, webhooksController, authController, assets)
 
 }

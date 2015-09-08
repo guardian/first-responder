@@ -9,6 +9,7 @@ GET        /                    controllers.Application.index
 GET        /healthcheck         controllers.Application.healthcheck
 
 # API/webhooks
+POST       /webhooks/mailgun    controllers.Webhooks.mailgun(key: String)
 
 # Auth
 GET        /login               controllers.Auth.login
