@@ -10,7 +10,7 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
 
   def index = AuthAction { request =>
 
-    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
+    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, None), new Callout("bangkokbombing", DateTime.now, None))
 
     Ok(views.html.index("", callouts, Nil))
   }
@@ -18,7 +18,7 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
   def showCallout(hashtag: String) = AuthAction { request =>
 
     // Stub callouts for now
-    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
+    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, None), new Callout("bangkokbombing", DateTime.now, None))
 
     val contributions = dynamo.findContributionsByHashtag(hashtag)
 
@@ -28,7 +28,7 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
   def showContribution(hashtag: String, id: String) = AuthAction { request =>
 
     // Stub callouts for now
-    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
+    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, None), new Callout("bangkokbombing", DateTime.now, None))
 
     dynamo.findContribution(hashtag, id) match {
       case Some(contribution) => Ok(views.html.contribution(hashtag, callouts, contribution))
@@ -45,7 +45,7 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
   // Public widget test page
   def showCalloutWidget(hashtag: String) = Action { request =>
 
-    val callout = new Callout(hashtag, DateTime.now, "")
+    val callout = new Callout(hashtag, DateTime.now, None)
 
     Ok(views.html.callout_widget(callout))
   }

@@ -48,9 +48,10 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   }
 
   val dynamo = {
-    val dynamoTableName = configuration.getString("aws.s3.dynamo.contributionsTableName") getOrElse "first-responder-DEV-contributions"
+    val contributionsTableName = configuration.getString("aws.s3.dynamo.contributionsTableName") getOrElse "first-responder-DEV-contributions"
+    val calloutsTableName = configuration.getString("aws.s3.dynamo.calloutsTableName") getOrElse "first-responder-DEV-callouts"
     val client: AmazonDynamoDBClient = new AmazonDynamoDBClient(awsCreds).withRegion(awsRegion)
-    new Dynamo(new DynamoDB(client), dynamoTableName)
+    new Dynamo(new DynamoDB(client), contributionsTableName, calloutsTableName)
   }
 
   val mailgunWebhookHandler = {
