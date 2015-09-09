@@ -2,7 +2,9 @@ package store
 
 import java.util
 
-import com.amazonaws.services.dynamodbv2.document.{ Table, Item, DynamoDB }
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap
+import com.amazonaws.services.dynamodbv2.document.{ Item, DynamoDB }
 import com.amazonaws.services.dynamodbv2.model._
 import models.{ Channel, Attachment, Contributor, Contribution }
 import org.joda.time.{ DateTimeZone, DateTime }
@@ -22,8 +24,23 @@ class Dynamo(db: DynamoDB, contributionsTableName: String) {
     contributions.putItem(item)
   }
 
+  def findContribution(hashtag: String, id: String): Option[Contribution] = {
+    val query = new QuerySpec()
+      .withHashKey("hashtag", hashtag)
+      .withFilterExpression("id = :v_id")
+      .withValueMap(new ValueMap().withString(":v_id", id))
+    val it = contributions.query(query).iterator()
+    if (it.hasNext)
+      Some(deserialize(it.next()))
+    else
+      None
+  }
+
   def findContributionsByHashtag(hashtag: String): Seq[Contribution] = {
-    val it = contributions.query("hashtag", hashtag).iterator().asScala
+    val query = new QuerySpec()
+      .withHashKey("hashtag", hashtag)
+      .withScanIndexForward(false) // order by increasing age
+    val it = contributions.query(query).iterator().asScala
     it.map(deserialize).toSeq
   }
 
