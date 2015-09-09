@@ -14,8 +14,8 @@ import enumeratum._
  */
 case class Callout(
   hashtag: String,
-  created: DateTime,
-  description: String)
+  createdAt: DateTime = DateTime.now,
+  description: Option[String])
 
 object Callout {
   implicit val jsonFormat = Json.format[Callout]
@@ -70,5 +70,4 @@ case class Contribution(
   attachments: Seq[Attachment])
 object Contribution {
   implicit val jsonFormat = Json.format[Contribution]
-
 }

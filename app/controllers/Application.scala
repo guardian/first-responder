@@ -9,29 +9,21 @@ import store.Dynamo
 class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Controller with AuthActions {
 
   def index = AuthAction { request =>
-
-    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
-
+    val callouts = dynamo.findCallouts()
     Ok(views.html.index("", callouts, Nil))
   }
 
   def showCallout(hashtag: String) = AuthAction { request =>
-
-    // Stub callouts for now
-    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
-
+    val callouts = dynamo.findCallouts()
     val contributions = dynamo.findContributionsByHashtag(hashtag)
-
     Ok(views.html.index(hashtag, callouts, contributions))
   }
 
   def showContribution(hashtag: String, id: String) = AuthAction { request =>
-
-    // Stub callouts for now
-    val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
-
     dynamo.findContribution(hashtag, id) match {
-      case Some(contribution) => Ok(views.html.contribution(hashtag, callouts, contribution))
+      case Some(contribution) =>
+        val callouts = dynamo.findCallouts()
+        Ok(views.html.contribution(hashtag, callouts, contribution))
       case None => NotFound
     }
 
@@ -45,7 +37,7 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
   // Public widget test page
   def showCalloutWidget(hashtag: String) = Action { request =>
 
-    val callout = new Callout(hashtag, DateTime.now, "")
+    val callout = new Callout(hashtag, DateTime.now, None)
 
     Ok(views.html.callout_widget(callout))
   }
