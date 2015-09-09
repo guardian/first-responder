@@ -7,7 +7,7 @@ import scala.util.Try
 
 object MailgunWebhookParser {
 
-  case class AttachmentInfo(url: String, `content-type`: String)
+  case class AttachmentInfo(url: String, `content-type`: String, size: Int)
   implicit val attachmentInfoReads = Json.reads[AttachmentInfo]
 
   case class Payload(from: String, to: String, subject: Option[String], body: String, attachments: Seq[AttachmentInfo])

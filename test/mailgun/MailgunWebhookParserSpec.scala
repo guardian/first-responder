@@ -20,7 +20,7 @@ class MailgunWebhookParserSpec extends FlatSpec with Matchers {
         to = "chris@sandboxb581b83d5fc3420982d2af09f3b2f7df.mailgun.org",
         subject = Some("Here's an inline attachment"),
         body = "Hello [image: Screen Shot 2015-08-24 at 13.01.57.png]",
-        attachments = Seq(AttachmentInfo("https://api.mailgun.net/v2/domains/sandboxb581b83d5fc3420982d2af09f3b2f7df.mailgun.org/messages/WyJjOWJhN2Y3NDNmIiwgWyI2N2UzYzdmNS02OGIzLTRhNTctOTQ0ZC1kN2ZkMWNhZTFiYTMiLCAiYTZhY2U1MjEtYjU3ZS00NWU1LWI1ODktNTA0MDQwNzUyN2M2Il0sICJtYWlsZ3VuIiwgInRob3IiXQ==/attachments/0", "image/png")))
+        attachments = Seq(AttachmentInfo("https://api.mailgun.net/v2/domains/sandboxb581b83d5fc3420982d2af09f3b2f7df.mailgun.org/messages/WyJjOWJhN2Y3NDNmIiwgWyI2N2UzYzdmNS02OGIzLTRhNTctOTQ0ZC1kN2ZkMWNhZTFiYTMiLCAiYTZhY2U1MjEtYjU3ZS00NWU1LWI1ODktNTA0MDQwNzUyN2M2Il0sICJtYWlsZ3VuIiwgInRob3IiXQ==/attachments/0", "image/png", 161081)))
     ))
 
   }
