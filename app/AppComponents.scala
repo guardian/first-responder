@@ -18,7 +18,7 @@ import store.{ Dynamo, S3 }
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) with NingWSComponents {
 
   def mandatoryConfigString(key: String): String =
-    configuration.getString(key) getOrElse (sys.error(s"Missing config key: $key"))
+    configuration.getString(key) getOrElse sys.error(s"Missing config key: $key")
 
   val googleAuthConfig = {
     def missingKey(description: String) =
@@ -39,19 +39,27 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
     new ProfileCredentialsProvider(),
     new InstanceProfileCredentialsProvider()
   )
-  val awsRegion = Regions.fromName("eu-west-1") // TODO read from conf
-  val s3BucketName = "first-responder-attachments-dev" // TODO read from conf
-  val s3Client: AmazonS3Client = new AmazonS3Client(awsCreds).withRegion(awsRegion)
-  val s3 = new S3(s3Client, s3BucketName)
+  val awsRegion = Regions.fromName(configuration.getString("aws.region") getOrElse "eu-west-1")
 
-  val dynamoTableName = "first-responder-DEV" // TODO read from conf
-  val dynamoClient: AmazonDynamoDBClient = new AmazonDynamoDBClient(awsCreds).withRegion(awsRegion)
-  val dynamo = new Dynamo(new DynamoDB(dynamoClient), dynamoTableName)
+  val s3 = {
+    val s3BucketName = configuration.getString("aws.s3.bucketName") getOrElse "first-responder-attachments-dev"
+    val client: AmazonS3Client = new AmazonS3Client(awsCreds).withRegion(awsRegion)
+    new S3(client, s3BucketName)
+  }
 
-  val mailgunApiKey = mandatoryConfigString("mailgun.apiKey")
+  val dynamo = {
+    val dynamoTableName = configuration.getString("aws.s3.dynamo.contributionsTableName") getOrElse "first-responder-DEV-contributions"
+    val client: AmazonDynamoDBClient = new AmazonDynamoDBClient(awsCreds).withRegion(awsRegion)
+    new Dynamo(new DynamoDB(client), dynamoTableName)
+  }
+
+  val mailgunWebhookHandler = {
+    /** The key that we need to make requests to Mailgun's API */
+    val mailgunApiKey = mandatoryConfigString("mailgun.apiKey")
+    new MailgunWebhookHandler(wsApi, mailgunApiKey, s3, dynamo)
+  }
   /** The key that we use to protect our webhook endpoint from unauthorised requests */
-  val mailgunWebhookKey = "foo" // TODO read from conf
-  val mailgunWebhookHandler = new MailgunWebhookHandler(wsApi, mailgunApiKey, s3, dynamo)
+  val mailgunWebhookKey = mandatoryConfigString("mailgun.webhookKey")
 
   val appController = new Application(googleAuthConfig)
   val authController = new Auth(googleAuthConfig, wsApi)
