@@ -3,19 +3,37 @@
 @main("Callout - " + calloutName, callouts) {
   <div class="row">
     <div class="col-md-12">
-    	<h1>#@calloutName</h1>
-    	<div class="row">
-	      @contributions.map { c =>
-			<a class="item col-xs-12 col-md-4 col-lg-4" href="/callout/@calloutName/contribution/@c.id">
-				<div class="item-content">
-				<div class="trail-image"></div>
-				<div class="caption">
-				<p>@c.body</p>
-				</div>
-				</div>
-		    </a>  
-		  } 
-		</div>
+    	@if(calloutName.isEmpty) {
+    		<h1>Welcome to First Responder</h1>
+    		<p>Choose a callout to see incoming contributions.</p>
+    	
+    	} else {
+    		<h1>#@calloutName</h1>
+    		<div class="row">
+		      @contributions.map { c =>
+				<a class="trail col-xs-12 col-md-4 col-lg-4" href="/callout/@calloutName/contribution/@c.id">
+					<div class="trail-content">
+					@if(c.attachments.isEmpty) {
+					   <div class="body">
+				       <span>@c.body</span>
+				       </div>
+					} else {
+					   
+					   @c.attachments.map { a =>
+						@if(a.mimeType) {
+							<div class="image" style="background-image: url(@a.url)">
+							</div>
+						}
+						
+					  } 
+					}
+					<div class="caption">@c.contributor.email</div>
+					</div>
+			    </a>  
+			  } 
+			</div>
+    	}
+    	
     </div><!-- end of col-md-12 -->
   </div><!-- end of row -->
 
