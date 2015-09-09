@@ -1,6 +1,6 @@
 package models
 
-import org.joda.time.DateTime
+import org.joda.time.{ DateTimeZone, DateTime }
 import play.api.libs.json._
 import enumeratum._
 
@@ -55,11 +55,16 @@ object Attachment {
  * It may have been submitted via email, FormStack form, SMS, ...
  *
  * I wanted to call it Response but the inevitable name clashes would be too painful.
+ *
+ * `hashtag` is the hash key in DynamoDB, and `createdAt` (stored as a UTC ISO string) is the range key.
+ *
  */
 case class Contribution(
+  hashtag: String,
   id: String = java.util.UUID.randomUUID.toString,
   contributor: Contributor,
-  hashtag: String,
+  channel: Channel,
+  createdAt: DateTime = DateTime.now.withZone(DateTimeZone.UTC),
   subject: Option[String],
   body: String, // TODO for FormStack, just dump all Qs and As into the body?
   attachments: Seq[Attachment])

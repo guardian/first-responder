@@ -5,7 +5,7 @@
 # Home page
 GET        /                    				 controllers.Application.index
 GET		   /callout/:hashtag					 controllers.Application.showCallout(hashtag:String)
-GET		   /callout/:hashtag/contribution/:id    controllers.Application.showContribution(hashtag:String, id:Int)
+GET		   /callout/:hashtag/contribution/:id    controllers.Application.showContribution(hashtag:String, id:String)
 GET		   /widget/:hashtag					 	 controllers.Application.showCalloutWidget(hashtag:String)
 
 # Healthcheck

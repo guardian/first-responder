@@ -61,7 +61,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   /** The key that we use to protect our webhook endpoint from unauthorised requests */
   val mailgunWebhookKey = mandatoryConfigString("mailgun.webhookKey")
 
-  val appController = new Application(googleAuthConfig)
+  val appController = new Application(dynamo, googleAuthConfig)
   val authController = new Auth(googleAuthConfig, wsApi)
   val webhooksController = new Webhooks(mailgunWebhookKey, mailgunWebhookHandler)
 

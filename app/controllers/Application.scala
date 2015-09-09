@@ -4,11 +4,9 @@ import com.gu.googleauth.GoogleAuthConfig
 import models._
 import play.api.mvc._
 import org.joda.time.DateTime
+import store.Dynamo
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-
-class Application(val authConfig: GoogleAuthConfig) extends Controller with AuthActions {
+class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Controller with AuthActions {
 
   def index = AuthAction { request =>
 
@@ -19,25 +17,24 @@ class Application(val authConfig: GoogleAuthConfig) extends Controller with Auth
 
   def showCallout(hashtag: String) = AuthAction { request =>
 
-    // Stub callouts and contributions
+    // Stub callouts for now
     val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
 
-    val contributions = Seq(
-      new Contribution("1", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester", Nil),
-      new Contribution("2", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester 2", Nil),
-      new Contribution("2", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester 3", Nil)
-    )
+    val contributions = dynamo.findContributionsByHashtag(hashtag)
 
     Ok(views.html.index(hashtag, callouts, contributions))
   }
 
-  def showContribution(hashtag: String, id: Int) = AuthAction { request =>
+  def showContribution(hashtag: String, id: String) = AuthAction { request =>
 
-    // Stub callouts and contributions
+    // Stub callouts for now
     val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
-    val contribution = new Contribution("1", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester", Nil)
 
-    Ok(views.html.contribution(hashtag, callouts, contribution))
+    dynamo.findContribution(hashtag, id) match {
+      case Some(contribution) => Ok(views.html.contribution(hashtag, callouts, contribution))
+      case None => NotFound
+    }
+
   }
 
   def healthcheck = Action {
