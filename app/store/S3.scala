@@ -5,6 +5,7 @@ import java.io.InputStream
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.{ CannedAccessControlList, PutObjectRequest, ObjectMetadata }
 import models.Attachment
+import org.joda.time.DateTime
 
 import scala.concurrent.Future
 import scala.concurrent._
@@ -15,8 +16,10 @@ class S3(client: AmazonS3Client, bucketName: String) {
   def storeAttachment(in: InputStream, mimeType: String): Future[Attachment] = {
     val id = java.util.UUID.randomUUID().toString
 
-    // TODO use a folder structure in S3? yyyy/mm/dd ?
-    val s3Key = id
+    val s3Key = {
+      val today = DateTime.now.toString("yyyy/MM/dd")
+      s"$today/$id"
+    }
     val metadata = new ObjectMetadata()
     metadata.setContentType(mimeType)
     val putObjectRequest = new PutObjectRequest(bucketName, s3Key, in, metadata)

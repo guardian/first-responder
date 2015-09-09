@@ -5,9 +5,6 @@ import models._
 import play.api.mvc._
 import org.joda.time.DateTime
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
-
 class Application(val authConfig: GoogleAuthConfig) extends Controller with AuthActions {
 
   def index = AuthAction { request =>
@@ -23,9 +20,9 @@ class Application(val authConfig: GoogleAuthConfig) extends Controller with Auth
     val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
 
     val contributions = Seq(
-      new Contribution("1", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester", Nil),
-      new Contribution("2", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester 2", Nil),
-      new Contribution("2", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester 3", Nil)
+      new Contribution("refugeecrisis", "1", new Contributor(Some("chris.wilk@guardian.co.uk")), Channel.Mail, DateTime.now, None, "Tester", Nil),
+      new Contribution("refugeecrisis", "2", new Contributor(Some("chris.wilk@guardian.co.uk")), Channel.Form, DateTime.now.minusMinutes(1), None, "Tester 2", Nil),
+      new Contribution("refugeecrisis", "2", new Contributor(Some("chris.wilk@guardian.co.uk")), Channel.SMS, DateTime.now.minusMinutes(2), None, "Tester 3", Nil)
     )
 
     Ok(views.html.index(hashtag, callouts, contributions))
@@ -35,7 +32,7 @@ class Application(val authConfig: GoogleAuthConfig) extends Controller with Auth
 
     // Stub callouts and contributions
     val callouts = Seq(new Callout("refugeecrisis", DateTime.now, ""), new Callout("bangkokbombing", DateTime.now, ""))
-    val contribution = new Contribution("1", new Contributor(Some("chris.wilk@guardian.co.uk")), "refugeecrisis", None, "Tester", Nil)
+    val contribution = new Contribution("refugeecrisis", "1", new Contributor(Some("chris.wilk@guardian.co.uk")), Channel.Mail, DateTime.now, None, "Tester", Nil)
 
     Ok(views.html.contribution(hashtag, callouts, contribution))
   }
