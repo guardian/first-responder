@@ -1,6 +1,8 @@
 @main-color: #B51800;
+@secondary-color: #ffbb00;
 @item-color: #EEEEEE;
 @item-hover-color: #CCCCCC;
+@header-text-color: #333;
 @text-color: #666666;
 
 html, body, .container-fluid.wrapper, .row.wrapper {
@@ -122,4 +124,20 @@ h2
 	position: fixed;
 	height: 50px;
 	bottom: 0px;
+}
+
+.widget
+{
+	margin-top: 15px;
+	border-top: 3px solid @main-color;
+	font-family: 'Merriweather', serif;
+	padding:10px 25px 10px 25px ;
+	color: @text-color;
+	background-color: #f6f6f6;
+
+	h1
+	{
+		font-size:14pt;
+		color: @header-text-color;
+	}
 }

@@ -45,4 +45,12 @@ class Application(val authConfig: GoogleAuthConfig) extends Controller with Auth
     Ok("OK")
   }
 
+  // Public widget test page
+  def showCalloutWidget(hashtag: String) = Action { request =>
+
+    val callout = new Callout(hashtag, DateTime.now, "")
+
+    Ok(views.html.callout_widget(callout))
+  }
+
 }
