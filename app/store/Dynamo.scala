@@ -130,7 +130,7 @@ object Dynamo {
       new Item()
         .withPrimaryKey("hashtag", contribution.hashtag)
         .withString("id", contribution.id)
-        .withOptString("contributor_email", contribution.contributor.email)
+        .withMap("contributor", contributor2map(contribution.contributor))
         .withString("channel", contribution.channel.toString)
         .withString("createdAt", contribution.createdAt.withZone(DateTimeZone.UTC).toString)
         .withOptString("subject", contribution.subject)
@@ -143,13 +143,23 @@ object Dynamo {
       Contribution(
         hashtag = item.getString("hashtag"),
         id = item.getString("id"),
-        contributor = Contributor(email = Option(item.getString("contributor_email"))),
+        contributor = Option(item.getMap[String]("contributor")).map(map2contributor).getOrElse(Contributor.Anonymous),
         channel = Channel.withName(item.getString("channel")),
         createdAt = new DateTime(item.getString("createdAt")).withZone(DateTimeZone.UTC),
         subject = Option(item.getString("subject")),
         body = item.getString("body"),
         attachments = attachments
       )
+    }
+
+    private def map2contributor(map: util.Map[String, String]): Contributor =
+      Contributor(email = Option(map.get("email")), phone = Option(map.get("phone")))
+
+    private def contributor2map(contributor: Contributor): util.Map[String, String] = {
+      val hashmap = new util.HashMap[String, String]()
+      contributor.email.foreach(e => hashmap.put("email", e))
+      contributor.phone.foreach(p => hashmap.put("phone", p))
+      hashmap
     }
   }
 

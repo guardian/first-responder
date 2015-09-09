@@ -14,6 +14,7 @@ import play.api.BuiltInComponentsFromContext
 import play.api.routing.Router
 import router.Routes
 import store.{ Dynamo, S3 }
+import twilio.TwilioWebhookHandler
 
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) with NingWSComponents {
 
@@ -59,14 +60,17 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
     val mailgunApiKey = mandatoryConfigString("mailgun.apiKey")
     new MailgunWebhookHandler(wsApi, mailgunApiKey, s3, dynamo)
   }
-  /** The key that we use to protect our webhook endpoint from unauthorised requests */
-  val mailgunWebhookKey = mandatoryConfigString("mailgun.webhookKey")
+
+  val twilioWebhookHandler = new TwilioWebhookHandler(dynamo)
+
+  /** The key that we use to protect our webhook endpoints from unauthorised requests */
+  val webhooksKey = mandatoryConfigString("webhooksKey")
   /** The key that we use to protect our API endpoints from unauthorised requests */
   val apiKey = mandatoryConfigString("apiKey")
 
   val appController = new Application(dynamo, googleAuthConfig)
   val authController = new Auth(googleAuthConfig, wsApi)
-  val webhooksController = new Webhooks(mailgunWebhookKey, mailgunWebhookHandler)
+  val webhooksController = new Webhooks(webhooksKey, mailgunWebhookHandler, twilioWebhookHandler)
   val apiController = new Api(apiKey, dynamo)
 
   val assets = new controllers.Assets(httpErrorHandler)

@@ -13,6 +13,7 @@ GET         /healthcheck                              controllers.Application.he
 
 # Webhooks
 POST        /webhooks/mailgun                         controllers.Webhooks.mailgun(key: String)
+POST        /webhooks/twilio                          controllers.Webhooks.twilio(key: String)
 
 # API
 POST        /api/callouts                             controllers.Api.createCallout(apiKey: String)

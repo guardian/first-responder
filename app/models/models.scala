@@ -35,11 +35,11 @@ object Channel extends Enum[Channel] with PlayJsonEnum[Channel] {
   case object SMS extends Channel
 }
 
-case class Contributor(email: Option[String])
+case class Contributor(email: Option[String], phone: Option[String])
 object Contributor {
   implicit val jsonFormat = Json.format[Contributor]
 
-  val Anonymous = Contributor(email = None)
+  val Anonymous = Contributor(email = None, phone = None)
 }
 
 /**

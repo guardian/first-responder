@@ -28,6 +28,7 @@ object FirstResponderBuild extends Build {
         "com.amazonaws" % "aws-java-sdk-s3" % Versions.awsSdk,
         "com.beachape" %% "enumeratum-play" % "1.3.1",
         "com.gu" %% "play-googleauth" % "0.3.1",
+        "com.twilio.sdk" % "twilio-java-sdk" % "4.5.0",
         "org.scalatestplus" %% "play" % "1.1.1" % "test"
       ),
       routesGenerator := InjectedRoutesGenerator,

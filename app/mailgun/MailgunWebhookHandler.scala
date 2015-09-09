@@ -24,7 +24,7 @@ class MailgunWebhookHandler(ws: WSAPI, mailgunApiKey: String, s3: S3, dynamo: Dy
     } yield {
       Contribution(
         hashtag = emailAddressToHashtag(payload.to),
-        contributor = Contributor(email = Some(payload.from)),
+        contributor = Contributor(email = Some(payload.from), phone = None),
         channel = Channel.Mail,
         subject = payload.subject,
         body = payload.body,
