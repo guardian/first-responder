@@ -3,20 +3,23 @@
 # ~~~~
 
 # Home page
-GET        /                    				 controllers.Application.index
-GET		   /callout/:hashtag					 controllers.Application.showCallout(hashtag:String)
-GET		   /callout/:hashtag/contribution/:id    controllers.Application.showContribution(hashtag:String, id:String)
-GET		   /widget/:hashtag					 	 controllers.Application.showCalloutWidget(hashtag:String)
+GET         /                                         controllers.Application.index
+GET         /callout/:hashtag                         controllers.Application.showCallout(hashtag:String)
+GET         /callout/:hashtag/contribution/:id        controllers.Application.showContribution(hashtag:String, id:String)
+GET         /widget/:hashtag                          controllers.Application.showCalloutWidget(hashtag:String)
 
 # Healthcheck
-GET        /healthcheck         controllers.Application.healthcheck
+GET         /healthcheck                              controllers.Application.healthcheck
 
-# API/webhooks
-POST       /webhooks/mailgun    controllers.Webhooks.mailgun(key: String)
+# Webhooks
+POST        /webhooks/mailgun                         controllers.Webhooks.mailgun(key: String)
+
+# API
+POST        /api/callouts                             controllers.Api.createCallout(apiKey: String)
 
 # Auth
-GET        /login               controllers.Auth.login
-GET        /oauth2callback      controllers.Auth.oauth2Callback
+GET         /login                                    controllers.Auth.login
+GET         /oauth2callback                           controllers.Auth.oauth2Callback
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                             controllers.Assets.versioned(path="/public", file: Asset)

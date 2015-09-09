@@ -70,5 +70,4 @@ case class Contribution(
   attachments: Seq[Attachment])
 object Contribution {
   implicit val jsonFormat = Json.format[Contribution]
-
 }

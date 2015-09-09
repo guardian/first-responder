@@ -2,7 +2,7 @@ package store
 
 import java.util
 
-import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec
+import com.amazonaws.services.dynamodbv2.document.spec.{ ScanSpec, QuerySpec }
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap
 import com.amazonaws.services.dynamodbv2.document.{ Item, DynamoDB }
 import com.amazonaws.services.dynamodbv2.model._
@@ -28,6 +28,11 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
   def save(contribution: Contribution): Unit = {
     val item = serialize(contribution)
     contributions.putItem(item)
+  }
+
+  def findCallouts(): Seq[Callout] = {
+    val it = callouts.scan(new ScanSpec()).iterator().asScala
+    it.map(deserialize[Callout]).toSeq.sortBy(_.createdAt.getMillis).reverse
   }
 
   def findContribution(hashtag: String, id: String): Option[Contribution] = {
@@ -147,6 +152,7 @@ object Dynamo {
       )
     }
   }
+
 }
 
 trait DynamoCodec[T] {

@@ -5,7 +5,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.s3.AmazonS3Client
 import com.gu.googleauth.GoogleAuthConfig
-import controllers.{ Webhooks, Auth, Application }
+import controllers.{ Api, Webhooks, Auth, Application }
 import mailgun.MailgunWebhookHandler
 import org.joda.time.Duration
 import play.api.ApplicationLoader.Context
@@ -61,12 +61,15 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   }
   /** The key that we use to protect our webhook endpoint from unauthorised requests */
   val mailgunWebhookKey = mandatoryConfigString("mailgun.webhookKey")
+  /** The key that we use to protect our API endpoints from unauthorised requests */
+  val apiKey = mandatoryConfigString("apiKey")
 
   val appController = new Application(dynamo, googleAuthConfig)
   val authController = new Auth(googleAuthConfig, wsApi)
   val webhooksController = new Webhooks(mailgunWebhookKey, mailgunWebhookHandler)
+  val apiController = new Api(apiKey, dynamo)
 
   val assets = new controllers.Assets(httpErrorHandler)
-  val router: Router = new Routes(httpErrorHandler, appController, webhooksController, authController, assets)
+  val router: Router = new Routes(httpErrorHandler, appController, webhooksController, apiController, authController, assets)
 
 }
