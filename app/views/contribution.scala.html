@@ -4,15 +4,30 @@
 
   <div class="row">
     <div class="col-md-12">
-    	<div class="row">
-    		<div class="contribution">
-		    	<div class="email">@c.contributor.email</div>
-		    	<div class="subject">@c.subject</div>
-		    	<div class="body">@c.body</div>
+    	<h1>#@calloutName</h1>
+    	<p class="hidden">Id: @c.id</p>
+    	<p>Recieved: @c.createdAt</p>
+    	<p>From: <a href="mailto:@c.contributor.email">@c.contributor.email</a></p>
+		<div class="contribution"> 	
+	    	<div class="subject">@c.subject</div>
+	    	<div class="body">@c.body</div>
+	    	<div class="media">
+	    		@if(c.attachments.isEmpty) {
+	    		   <i>No media found</i>
+	    		} else {
+	    		   <div class="row">
+    			   @c.attachments.map { a =>
+					@if(a.mimeType) {
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+							<img src="@a.url" alt=""/>
+						</div>
+					}
+					</div>
+				  } 
+				}
 	    	</div>
+    	</div>
 
-
-		</div>
     </div><!-- end of col-md-12 -->
   </div><!-- end of row -->
   <div class="row action-bar">

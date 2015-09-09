@@ -17,7 +17,7 @@ a:hover
 
 h1
 {
-	color: @text-color;
+	color: @header-text-color;
 	font-size: 16pt;
 	margin-bottom:25px;
 }
@@ -26,6 +26,12 @@ h2
 {
 	color:#FFFFFF;
 	font-size: 16pt;
+}
+
+h3
+{
+	color: @text-color;
+	font-size: 12pt;
 }
 
 .sidebar .nav-sidebar
@@ -40,6 +46,15 @@ h2
 		position:relative;	
 		background-color: @main-color;
 		height:100%;
+
+		position: fixed;
+	    top: 0px;
+	    bottom: 0;
+	    left: 0;
+	    z-index: 1000;
+	    display: block;
+	    overflow-x: hidden;
+	    overflow-y: auto;
 	}
 	.main-content
 	{
@@ -140,4 +155,40 @@ h2
 		font-size:14pt;
 		color: @header-text-color;
 	}
+}
+
+.contribution
+{
+	margin-top:15px;
+	padding-top:15px;
+	border-top: 1px solid #EEEEEE;
+
+	.subject
+	{
+		font-weight: bold;
+	}
+	.body
+	{
+		margin-top:10px;
+	}
+	.media 
+	{
+		margin-top:15px;
+		padding-top:15px;
+		border-top: 1px solid #EEEEEE;
+
+		img{
+			width:100%;
+		}
+	}
+}
+
+.mute
+{
+	color: #CCCCCC;
+}
+
+.hidden
+{
+	display:none;
 }
