@@ -8,7 +8,7 @@
     <div class="col-md-12">
     	
     	<p class="hidden">Id: @c.id</p>
-    	<p>Recieved: @c.createdAt</p>
+    	<p>Recieved: @c.createdAt.toString("dd MMM yyyy - HH:mm:ss")</p>
     	<p>From: <a href="mailto:@c.contributor.email">@c.contributor.email</a> @c.contributor.phone</p>
 		<div class="contribution"> 	
 	    	<div class="subject">@c.subject</div>
