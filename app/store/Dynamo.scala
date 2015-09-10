@@ -146,6 +146,7 @@ object Dynamo {
         .withOptString("subject", contribution.subject)
         .withString("body", contribution.body)
         .withList("attachments", attachments)
+        .withString("status", contribution.status.entryName)
     }
 
     override def fromItem(item: Item): Contribution = {
@@ -158,7 +159,8 @@ object Dynamo {
         createdAt = new DateTime(item.getString("createdAt")).withZone(DateTimeZone.UTC),
         subject = Option(item.getString("subject")),
         body = item.getString("body"),
-        attachments = attachments
+        attachments = attachments,
+        status = Option(item.getString("status")).map(Status.withName).getOrElse(Status.JustIn)
       )
     }
 

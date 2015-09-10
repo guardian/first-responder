@@ -1,5 +1,6 @@
 package models
 
+import enumeratum.EnumEntry.Snakecase
 import org.joda.time.{ DateTimeZone, DateTime }
 import play.api.libs.json._
 import enumeratum._
@@ -50,6 +51,20 @@ object Attachment {
   implicit val jsonFormat = Json.format[Attachment]
 }
 
+sealed trait Status extends EnumEntry with Snakecase {
+  /** A human-readable label for use in the UI */
+  def label: String = toString
+}
+object Status extends Enum[Status] with PlayJsonEnum[Status] {
+  val values = findValues
+
+  case object JustIn extends Status { override val label = "Just in" }
+  case object Interesting extends Status
+  case object Verified extends Status
+  case object Used extends Status
+  case object DoNotUse extends Status { override val label = "Do not use" }
+}
+
 /**
  * Something submitted by a reader in response to a callout.
  * It may have been submitted via email, FormStack form, SMS, ...
@@ -67,7 +82,8 @@ case class Contribution(
   createdAt: DateTime = DateTime.now.withZone(DateTimeZone.UTC),
   subject: Option[String],
   body: String, // TODO for FormStack, just dump all Qs and As into the body?
-  attachments: Seq[Attachment])
+  attachments: Seq[Attachment],
+  status: Status = Status.JustIn)
 object Contribution {
   implicit val jsonFormat = Json.format[Contribution]
 }
