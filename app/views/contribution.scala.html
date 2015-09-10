@@ -1,5 +1,7 @@
 @(calloutName: String, callouts: Seq[Callout], c: Contribution)
 
+@import models.ModerationStatus
+
 @main("Callout " + calloutName, callouts) {
 
   <div class="row contribution">
@@ -40,6 +42,34 @@
     <div class="col-md-12">
     	<div class="action-buttons">
   			<a href="/callout/@calloutName" class="btn btn-default btn-lg">Back to contributions</a>
+  			@if(c.moderationStatus == ModerationStatus.JustIn){
+  				<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Selected.entryName">
+	  				<button class="btn btn-success btn-lg">Select</button>
+	  			</form>
+	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
+	  				<button class="btn btn-danger btn-lg">Discard</button>
+  				</form>
+  			}
+  			@if(c.moderationStatus == ModerationStatus.Selected){
+  				<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Ready.entryName">
+	  				<button class="btn btn-success btn-lg">Ready</button>
+	  			</form>
+	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
+	  				<button class="btn btn-danger btn-lg">Discard</button>
+  				</form>
+  			}
+  			@if(c.moderationStatus == ModerationStatus.Ready){
+	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
+	  				<button class="btn btn-danger btn-lg">Discard</button>
+  				</form>
+  			}
+  			@if(c.moderationStatus == ModerationStatus.Discarded){
+	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Selected.entryName">
+	  				<button class="btn btn-success btn-lg">Revive</button>
+  				</form>
+  			}
+
+
   		</div>
   	</div><!-- end of col-md-12 -->
   </div><!-- end of row -->
