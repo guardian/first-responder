@@ -35,6 +35,16 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
     it.map(deserialize[Callout]).toSeq.sortBy(_.createdAt.getMillis).reverse
   }
 
+  def findCalloutByHashtag(hashtag: String): Option[Callout] = {
+    val query = new QuerySpec()
+      .withHashKey("hashtag", hashtag)
+    val it = callouts.query(query).iterator()
+    if (it.hasNext)
+      Some(deserialize[Callout](it.next()))
+    else
+      None
+  }
+
   def findContribution(hashtag: String, id: String): Option[Contribution] = {
     val query = new QuerySpec()
       .withHashKey("hashtag", hashtag)

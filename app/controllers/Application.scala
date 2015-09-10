@@ -36,10 +36,11 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
 
   // Public widget test page
   def showCalloutWidget(hashtag: String) = Action { request =>
-
-    val callout = new Callout(hashtag, DateTime.now, None)
-
-    Ok(views.html.callout_widget(callout))
+    dynamo.findCalloutByHashtag(hashtag) match {
+      case Some(callout) =>
+        Ok(views.html.callout_widget(callout))
+      case None => NotFound
+    }
   }
 
 }

@@ -109,13 +109,16 @@ h3
 	{
 		height:250px;
 		overflow: none;
+		
+		div
+		{
+			padding:20px;
+		}
 	}
 	.caption
 	{
-		padding: 0px;
-		position: absolute;
-		bottom:0px;
-		right:0px;
+		background-color: @item-color;
+		padding: 5px 20px 5px 20px ;
 	}
 	.trail-content
 	{
@@ -132,6 +135,10 @@ h3
 		color: @text-color;
 	}
 	.trail-content
+	{
+		background-color: @item-hover-color;
+	}
+	.caption
 	{
 		background-color: @item-hover-color;
 	}

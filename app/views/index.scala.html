@@ -18,7 +18,7 @@
 					<div class="trail-content">
 					@if(c.attachments.isEmpty) {
 					   <div class="body">
-				       <span>@c.body</span>
+				       	<div>@c.body</div>
 				       </div>
 					} else {
 					   
@@ -31,7 +31,7 @@
 						}
 						@if(a.mimeType == "video/quicktime" || a.mimeType == "video/mp4") {
 							<div class="image video-play" >
-								<svg width="76px" height="76px">﻿<path fill="#000000" fill-opacity="1" stroke-width="0.2" stroke-linejoin="round" d="M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z "></path></svg>
+								
 							</div>
 						}
 						
@@ -39,7 +39,7 @@
 						
 					}
 					<div class="caption">
-						
+						<p>@c.contributor.email  @c.contributor.phone</p>
 					</div>
 					</div>
 			    </a>  
