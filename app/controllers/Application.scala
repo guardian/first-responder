@@ -10,7 +10,7 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
   def index = AuthAction { request =>
     val callouts = dynamo.findCallouts()
     val contributions = dynamo.findLatestJustInContributions()
-    Ok(views.html.index("", callouts, contributions))
+    Ok(views.html.index("", callouts, contributions, ModerationStatus.JustIn))
   }
 
   def showCalloutJustIn(hashtag: String) = showCallout(hashtag, ModerationStatus.JustIn)
@@ -18,7 +18,7 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
   def showCallout(hashtag: String, status: ModerationStatus) = AuthAction { request =>
     val callouts = dynamo.findCallouts()
     val contributions = dynamo.findContributionsByHashtagAndStatus(hashtag, status)
-    Ok(views.html.index(hashtag, callouts, contributions))
+    Ok(views.html.index(hashtag, callouts, contributions, status))
   }
 
   def showContribution(hashtag: String, id: String) = AuthAction { request =>

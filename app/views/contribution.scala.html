@@ -2,7 +2,7 @@
 
 @import models.ModerationStatus
 
-@main(calloutName, "Callout " + calloutName, callouts) {
+@main("#" + calloutName, calloutName, callouts, Some(c.moderationStatus)) {
 
   <div class="row contribution">
     <div class="col-md-12">
@@ -41,7 +41,7 @@
   <div class="row action-bar">
     <div class="col-md-12">
     	<div class="action-buttons">
-  			<a href="/callout/@calloutName" class="btn btn-default btn-lg">Back to contributions</a>
+  			<a href="/callout/@calloutName" class="btn btn-default btn-lg">Back</a>
   			@if(c.moderationStatus == ModerationStatus.JustIn){
   				<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Selected.entryName">
 	  				<button class="btn btn-success btn-lg">Select</button>

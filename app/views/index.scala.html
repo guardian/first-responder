@@ -1,8 +1,8 @@
-@(calloutName: String, callouts: Seq[Callout], contributions: Seq[Contribution])
+@(calloutName: String, callouts: Seq[Callout], contributions: Seq[Contribution], moderationStatus: models.ModerationStatus)
 
 @import models.ModerationStatus
 
-@main("Callout - " + calloutName,calloutName, callouts) {
+@main("#" + calloutName,calloutName, callouts, Some(moderationStatus)) {
 
         <div class="col-sm-12 col-md-12 main no-padding">
           <div class="main-content">
