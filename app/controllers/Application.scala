@@ -30,6 +30,27 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
 
   }
 
+  def updateModerationStatus(hashtag: String, id: String, status: ModerationStatus) = AuthAction { request =>
+    /*
+    1. Update the item in DynamoDB
+    2. Find the next item in the list of contributions
+    3. If there is a next item, redirect to that item's page with a flash message
+       Otherwise, redirect to the updated item's page with a different flash message
+    */
+    dynamo.findContribution(hashtag: String, id: String) match {
+      case Some(contribution) =>
+        dynamo.updateModerationStatus(contribution, status)
+        val nextContrib = dynamo.findNextContributionOlderThan(contribution)
+        nextContrib match {
+          case Some(next) =>
+            Redirect(routes.Application.showContribution(hashtag, next.id)).flashing("info" -> "Successfully updated contribution")
+          case None =>
+            Redirect(routes.Application.showContribution(hashtag, id)).flashing("info" -> "You're all done!")
+        }
+      case None => NotFound
+    }
+  }
+
   def healthcheck = Action {
     // TODO check DynamoDB health?
     Ok("OK")

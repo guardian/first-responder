@@ -4,7 +4,7 @@ import java.util
 
 import com.amazonaws.services.dynamodbv2.document.spec.{ ScanSpec, QuerySpec }
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap
-import com.amazonaws.services.dynamodbv2.document.{ Item, DynamoDB }
+import com.amazonaws.services.dynamodbv2.document.{ AttributeUpdate, PrimaryKey, Item, DynamoDB }
 import com.amazonaws.services.dynamodbv2.model._
 import models._
 import org.joda.time.{ DateTimeZone, DateTime }
@@ -13,6 +13,7 @@ import play.api.libs.json.Json
 import scala.collection.JavaConverters._
 
 class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: String) {
+
   import Dynamo._
 
   initTables()
@@ -65,6 +66,36 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
       .withScanIndexForward(false) // order by increasing age
     val it = contributions.query(query).iterator().asScala
     it.map(deserialize[Contribution]).toSeq
+  }
+
+  /**
+   * Find the next contribution older than the given one, with the same hashtag and moderation status
+   */
+  def findNextContributionOlderThan(contribution: Contribution): Option[Contribution] = {
+    val query = new QuerySpec()
+      .withKeyConditionExpression("hashtag = :h and createdAt < :c")
+      .withFilterExpression("moderationStatus = :s")
+      .withValueMap(new ValueMap()
+        .withString(":h", contribution.hashtag)
+        .withString(":c", contribution.createdAt.withZone(DateTimeZone.UTC).toString)
+        .withString(":s", contribution.moderationStatus.entryName))
+      .withScanIndexForward(false) // order by increasing age
+      .withMaxResultSize(1)
+    val it = contributions.query(query).iterator().asScala
+    if (it.hasNext)
+      Some(deserialize[Contribution](it.next()))
+    else
+      None
+  }
+
+  def updateModerationStatus(contribution: Contribution, newStatus: ModerationStatus): Contribution = {
+    contributions.updateItem(
+      new PrimaryKey(
+        "hashtag", contribution.hashtag,
+        "createdAt", contribution.createdAt.withZone(DateTimeZone.UTC).toString),
+      new AttributeUpdate("moderationStatus").put(newStatus.entryName)
+    )
+    contribution.copy(moderationStatus = newStatus)
   }
 
   private def serialize[T: DynamoCodec](t: T): Item = implicitly[DynamoCodec[T]].toItem(t)
