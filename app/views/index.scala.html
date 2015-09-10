@@ -7,14 +7,19 @@
     		<div class="col-md-12">
     		<h1>Welcome to First Responder</h1>
     		<p>Choose a callout to see incoming contributions.</p>
+    		<ul class="callout-list">
+	            @callout_list(callouts) 
+	        </ul>
 	    	</div><!-- end of col-md-12 -->
 	    </div><!-- end of row -->
     	} else {
-    	<div class="row contribution-list">
+        <div class="col-sm-12 col-md-12 main no-padding">
+          <div class="main-content">
+                <div class="row contribution-list">
     		<div class="col-md-12">    		
     		<div class="row">
 		      @contributions.map { c =>
-				<a class="trail col-xs-12 col-md-4 col-lg-4 no-padding" href="/callout/@calloutName/contribution/@c.id">
+				<a class="trail col-xs-12 col-md-3 col-lg-3 no-padding" href="/callout/@calloutName/contribution/@c.id">
 					<div class="trail-content">
 					@if(c.attachments.isEmpty) {
 					   <div class="body">
@@ -47,6 +52,11 @@
 			</div>
 			</div><!-- end of col-md-12 -->
 	    </div><!-- end of row -->
+          </div>
+        </div>
+      </div>
+
+    	
     	}
     	
     

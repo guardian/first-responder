@@ -1,7 +1,5 @@
 @(callouts: Seq[Callout])
 
-  <div>
-  <ul class="nav nav-stacked">
   @callouts.map { c =>
 	<li>
 	<a href="/callout/@c.hashtag">
@@ -10,5 +8,3 @@
   </a>
 	</li>  
   } 
-  </ul>
-  </div>

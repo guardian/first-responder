@@ -4,9 +4,15 @@
 @item-hover-color: #CCCCCC;
 @header-text-color: #333;
 @text-color: #666666;
+@guardian-blue:#005689; 
 
 html, body, .container-fluid.wrapper, .row.wrapper {
     height: 100%;
+}
+
+.row.wrapper
+{
+	margin-top:53px;
 }
 
 a:hover
@@ -39,26 +45,52 @@ h3
 	padding:0px;
 }
 
-.sidebar .nav-sidebar
+.sidebar
 {
 	padding:10px;
+}
+
+.navbar.navbar-default
+{
+	background-color: @main-color;
+	border-bottom: 1px solid @main-color;
+	margin-bottom: 0px;
+
+	li a, li a:hover
+	{
+		color: #FFFFFF;
+	}
+	.dropdown-menu
+	{
+		background-color: @main-color;
+		border-radius: none;
+	}
+	.navbar-brand
+	{
+		margin-top: -8px;
+		padding:0px;
+	}
 }
 
 @media (min-width: 768px) 
 {    
 	.sidebar
 	{
-		position:relative;	
-		background-color: @main-color;
+		position:fixed;	
+		background-color: #EEEEEE;;
 		height:100%;
 		position: fixed;
-	    top: 0px;
+	    top: 50px;
 	    bottom: 0;
 	    left: 0;
-	    z-index: 1000;
 	    display: block;
 	    overflow-x: hidden;
 	    overflow-y: auto;
+
+	    ul li 
+	    {
+	    	list-style-type: none;
+	    }
 	}
 	.main-content
 	{
@@ -74,7 +106,7 @@ h3
 @media (max-width: 768px) {
     .sidebar
 	{
-		background-color: @main-color;
+		background-color: #EEEEEE;
 	}
 	.main-content
 	{
@@ -108,7 +140,7 @@ h3
 	.body
 	{
 		height:250px;
-		overflow: none;
+		overflow: hidden;
 		
 		div
 		{
@@ -161,7 +193,6 @@ h3
 	color: #FFFFFF;
 	padding: 0px;
 	margin-bottom:10px;
-
 }
 
 .nav.nav-sidebar li a:hover
@@ -170,14 +201,9 @@ h3
 	background: none !important;
 }
 
-.contribution-list
-{
-
-}
-
 .btn
 {
-	border-radius: 0px;
+	border-radius: 20px;
 }
 .btn.btn-default
 {
@@ -198,6 +224,13 @@ h3
 	color: #FFFFFF;
 }
 
+.btn.btn-primary
+{
+	border: 2px solid @guardian-blue;
+	background-color: @guardian-blue;
+	color: #FFFFFF;
+}
+
 .action-bar
 {
 	position: fixed;
@@ -207,13 +240,12 @@ h3
 	z-index:1001;
 	background-color: #FFFFFF;
 	padding-top:15px;
-
 }
 
 .widget
 {
 	margin-top: 15px;
-	border-top: 3px solid @main-color;
+	border: 3px solid @main-color;
 	font-family: 'Merriweather', serif;
 	padding:10px 25px 10px 25px ;
 	color: @text-color;
@@ -223,6 +255,10 @@ h3
 	{
 		font-size:14pt;
 		color: @header-text-color;
+	}
+	.description
+	{
+		padding-bottom:30px;
 	}
 }
 
@@ -261,4 +297,9 @@ h3
 .hidden
 {
 	display:none;
+}
+
+.callout-list
+{
+	list-style-type:none;
 }
