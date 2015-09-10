@@ -32,7 +32,8 @@ object FirstResponderBuild extends Build {
         "org.scalatestplus" %% "play" % "1.1.1" % "test"
       ),
       routesGenerator := InjectedRoutesGenerator,
-      riffRaffPackageType := (packageZipTarball in config("universal")).value
+      riffRaffPackageType := (packageZipTarball in config("universal")).value,
+      routesImport += "models._"
     )
 
 }

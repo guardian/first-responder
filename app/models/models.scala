@@ -1,5 +1,6 @@
 package models
 
+import enumeratum.EnumEntry.Snakecase
 import org.joda.time.{ DateTimeZone, DateTime }
 import play.api.libs.json._
 import enumeratum._
@@ -50,6 +51,19 @@ object Attachment {
   implicit val jsonFormat = Json.format[Attachment]
 }
 
+sealed trait ModerationStatus extends EnumEntry with Snakecase {
+  /** A human-readable label for use in the UI */
+  def label: String = toString
+}
+object ModerationStatus extends Enum[ModerationStatus] with PlayEnum[ModerationStatus] with PlayJsonEnum[ModerationStatus] {
+  val values = findValues
+
+  case object JustIn extends ModerationStatus { override val label = "Just in" }
+  case object Selected extends ModerationStatus
+  case object Discarded extends ModerationStatus
+  case object Ready extends ModerationStatus
+}
+
 /**
  * Something submitted by a reader in response to a callout.
  * It may have been submitted via email, FormStack form, SMS, ...
@@ -67,7 +81,8 @@ case class Contribution(
   createdAt: DateTime = DateTime.now.withZone(DateTimeZone.UTC),
   subject: Option[String],
   body: String, // TODO for FormStack, just dump all Qs and As into the body?
-  attachments: Seq[Attachment])
+  attachments: Seq[Attachment],
+  moderationStatus: ModerationStatus = ModerationStatus.JustIn)
 object Contribution {
   implicit val jsonFormat = Json.format[Contribution]
 }
