@@ -88,6 +88,18 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
       None
   }
 
+  /**
+   * Find the latest 100 JustIn contributions across all hashtags
+   */
+  def findLatestJustInContributions(limit: Int = 100): Seq[Contribution] = {
+    val scan = new ScanSpec()
+      .withFilterExpression("moderationStatus = :s")
+      .withValueMap(new ValueMap().withString(":s", ModerationStatus.JustIn.entryName))
+      .withMaxResultSize(limit)
+    val it = contributions.scan(scan).iterator().asScala
+    it.map(deserialize[Contribution]).toSeq.sortBy(_.createdAt.getMillis).reverse
+  }
+
   def updateModerationStatus(contribution: Contribution, newStatus: ModerationStatus): Contribution = {
     contributions.updateItem(
       new PrimaryKey(
