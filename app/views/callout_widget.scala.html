@@ -5,6 +5,9 @@
 <html lang="en">
     <head>
         <title>Callout Widget</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         
@@ -18,14 +21,19 @@
       <div class="row wrapper">
         <div class="col-sm-12 col-md-12 ">
             <div class="widget">
-              <h1>Can you help us? #@callout.hashtag</h1>
+              <h1>Send us your story <span style="float: right">#@callout.hashtag</span></h1>
                 <div class="description">@callout.description</div>
                 <p>          
-                  <a class="btn btn-primary" href="mailto:@callout.hashtag@@sandboxb581b83d5fc3420982d2af09f3b2f7df.mailgun.org" >Email with attached any photos</a>
+                  <a class="btn btn-primary" href="mailto:@callout.hashtag@@sandboxb581b83d5fc3420982d2af09f3b2f7df.mailgun.org" >Send us an email</a>
+                  <span class="info">Any image and video attachments will be received</span>
+                </p>               
+                <p>
+                  <a class="btn btn-primary" href="sms:+441464254016[,+441464254016]*[?body=@callout.hashtag]" target="_blank">Text us +44 (0)1464 254016</a>
+                  <span class="info">Add "@callout.hashtag" as the first word of your text message</span>
                 </p>
                 <p>
-                  <a class="btn btn-primary" href="https://twitter.com/intent/tweet?text=@@guardian%20%23@callout.hashtag" target="_blank">Tweet @@guardian #@callout.hashtag</a>
-                </p>            
+                  <a class="btn btn-primary" href="https://twitter.com/intent/tweet?text=@@guardian%20%23@callout.hashtag" target="_blank">Tweet us @@guardian #@callout.hashtag</a>
+                </p>       
                 <p>
                   <a class="btn btn-primary" href="https://witness.theguardian.com/assignment/submitastory#contribute" target="_blank">Submit via GuardianWitness</a>
                 </p>
