@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.s3.AmazonS3Client
 import com.gu.googleauth.GoogleAuthConfig
 import controllers.{ Api, Webhooks, Auth, Application }
+import formstack.Formstack
 import mailgun.MailgunWebhookHandler
 import org.joda.time.Duration
 import play.api.ApplicationLoader.Context
@@ -68,10 +69,15 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   /** The key that we use to protect our API endpoints from unauthorised requests */
   val apiKey = mandatoryConfigString("apiKey")
 
+  val formstack = {
+    val oauthToken = mandatoryConfigString("formstack.oauthToken")
+    new Formstack(wsApi, webhooksKey, oauthToken)
+  }
+
   val appController = new Application(dynamo, googleAuthConfig)
   val authController = new Auth(googleAuthConfig, wsApi)
   val webhooksController = new Webhooks(webhooksKey, mailgunWebhookHandler, twilioWebhookHandler)
-  val apiController = new Api(apiKey, dynamo)
+  val apiController = new Api(apiKey, dynamo, formstack)
 
   val assets = new controllers.Assets(httpErrorHandler)
   val router: Router = new Routes(httpErrorHandler, appController, webhooksController, apiController, authController, assets)
