@@ -53,11 +53,16 @@ h3
 .navbar.navbar-default
 {
 	background-color: @main-color;
-	border-bottom: 1px solid @main-color;
+	border-bottom: 0px solid @main-color;
 	margin-bottom: 0px;
 
 	li a, li a:hover
 	{
+		color: #FFFFFF;
+	}
+	li.active>a,li.active>a:focus,li.active>a:hover
+	{
+		background-color: #333333;
 		color: #FFFFFF;
 	}
 	.dropdown-menu
@@ -67,7 +72,7 @@ h3
 	}
 	.navbar-brand
 	{
-		margin-top: -8px;
+		margin-top: -12px;
 		padding:0px;
 	}
 }
