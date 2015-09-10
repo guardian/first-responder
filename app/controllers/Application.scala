@@ -3,7 +3,6 @@ package controllers
 import com.gu.googleauth.GoogleAuthConfig
 import models._
 import play.api.mvc._
-import org.joda.time.DateTime
 import store.Dynamo
 
 class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Controller with AuthActions {
@@ -13,9 +12,11 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
     Ok(views.html.index("", callouts, Nil))
   }
 
-  def showCallout(hashtag: String) = AuthAction { request =>
+  def showCalloutJustIn(hashtag: String) = showCallout(hashtag, ModerationStatus.JustIn)
+
+  def showCallout(hashtag: String, status: ModerationStatus) = AuthAction { request =>
     val callouts = dynamo.findCallouts()
-    val contributions = dynamo.findContributionsByHashtag(hashtag)
+    val contributions = dynamo.findContributionsByHashtagAndStatus(hashtag, status)
     Ok(views.html.index(hashtag, callouts, contributions))
   }
 

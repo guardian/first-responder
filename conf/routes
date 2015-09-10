@@ -4,7 +4,8 @@
 
 # Home page
 GET         /                                         controllers.Application.index
-GET         /callout/:hashtag                         controllers.Application.showCallout(hashtag:String)
+GET         /callout/:hashtag                         controllers.Application.showCalloutJustIn(hashtag:String)
+GET         /callout/:hashtag/:status                 controllers.Application.showCallout(hashtag:String, status: ModerationStatus)
 GET         /callout/:hashtag/contribution/:id        controllers.Application.showContribution(hashtag:String, id:String)
 GET         /widget/:hashtag                          controllers.Application.showCalloutWidget(hashtag:String)
 

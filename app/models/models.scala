@@ -51,18 +51,17 @@ object Attachment {
   implicit val jsonFormat = Json.format[Attachment]
 }
 
-sealed trait Status extends EnumEntry with Snakecase {
+sealed trait ModerationStatus extends EnumEntry with Snakecase {
   /** A human-readable label for use in the UI */
   def label: String = toString
 }
-object Status extends Enum[Status] with PlayJsonEnum[Status] {
+object ModerationStatus extends Enum[ModerationStatus] with PlayEnum[ModerationStatus] with PlayJsonEnum[ModerationStatus] {
   val values = findValues
 
-  case object JustIn extends Status { override val label = "Just in" }
-  case object Interesting extends Status
-  case object Verified extends Status
-  case object Used extends Status
-  case object DoNotUse extends Status { override val label = "Do not use" }
+  case object JustIn extends ModerationStatus { override val label = "Just in" }
+  case object Selected extends ModerationStatus
+  case object Discarded extends ModerationStatus
+  case object Ready extends ModerationStatus
 }
 
 /**
@@ -83,7 +82,7 @@ case class Contribution(
   subject: Option[String],
   body: String, // TODO for FormStack, just dump all Qs and As into the body?
   attachments: Seq[Attachment],
-  status: Status = Status.JustIn)
+  moderationStatus: ModerationStatus = ModerationStatus.JustIn)
 object Contribution {
   implicit val jsonFormat = Json.format[Contribution]
 }

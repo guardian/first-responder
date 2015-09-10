@@ -57,9 +57,11 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
       None
   }
 
-  def findContributionsByHashtag(hashtag: String): Seq[Contribution] = {
+  def findContributionsByHashtagAndStatus(hashtag: String, status: ModerationStatus): Seq[Contribution] = {
     val query = new QuerySpec()
       .withHashKey("hashtag", hashtag)
+      .withFilterExpression("moderationStatus = :s")
+      .withValueMap(new ValueMap().withString(":s", status.entryName))
       .withScanIndexForward(false) // order by increasing age
     val it = contributions.query(query).iterator().asScala
     it.map(deserialize[Contribution]).toSeq
@@ -146,7 +148,7 @@ object Dynamo {
         .withOptString("subject", contribution.subject)
         .withString("body", contribution.body)
         .withList("attachments", attachments)
-        .withString("status", contribution.status.entryName)
+        .withString("moderationStatus", contribution.moderationStatus.entryName)
     }
 
     override def fromItem(item: Item): Contribution = {
@@ -160,7 +162,7 @@ object Dynamo {
         subject = Option(item.getString("subject")),
         body = item.getString("body"),
         attachments = attachments,
-        status = Option(item.getString("status")).map(Status.withName).getOrElse(Status.JustIn)
+        moderationStatus = Option(item.getString("moderationStatus")).map(ModerationStatus.withName).getOrElse(ModerationStatus.JustIn)
       )
     }
 
