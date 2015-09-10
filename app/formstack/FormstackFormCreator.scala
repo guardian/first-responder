@@ -6,7 +6,7 @@ import play.api.libs.ws.WSAPI
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class Formstack(ws: WSAPI, webhookKey: String, formstackOAuthToken: String) {
+class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: String) {
 
   // TODO
   def handleWebhook() = ???

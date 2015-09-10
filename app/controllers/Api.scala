@@ -1,6 +1,6 @@
 package controllers
 
-import formstack.Formstack
+import formstack.FormstackFormCreator
 import models.Callout
 import play.api.mvc.{ Action, Controller }
 import store.Dynamo
@@ -8,7 +8,7 @@ import store.Dynamo
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class Api(validApiKey: String, dynamo: Dynamo, formstack: Formstack) extends Controller {
+class Api(validApiKey: String, dynamo: Dynamo, formstack: FormstackFormCreator) extends Controller {
 
   def createCallout(apiKey: String) = Action.async { request =>
     if (apiKey != validApiKey)

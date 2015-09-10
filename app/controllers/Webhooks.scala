@@ -1,6 +1,7 @@
 package controllers
 
 import com.twilio.sdk.verbs.{ Message, TwiMLResponse }
+import formstack.{ FormstackWebhookHandler, FormstackWebhookParser }
 import mailgun.{ MailgunWebhookHandler, MailgunWebhookParser }
 import play.api.Logger
 import play.api.mvc.{ Result, Action, Controller }
@@ -9,7 +10,10 @@ import twilio.{ TwilioWebhookHandler, TwilioWebhookParser }
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class Webhooks(webhooksKey: String, mailgunWebhookHandler: MailgunWebhookHandler, twilioWebhookHandler: TwilioWebhookHandler) extends Controller {
+class Webhooks(webhooksKey: String,
+    mailgunWebhookHandler: MailgunWebhookHandler,
+    twilioWebhookHandler: TwilioWebhookHandler,
+    formstackWebhookHandler: FormstackWebhookHandler) extends Controller {
 
   def mailgun(key: String) = Action.async { request =>
     if (key != webhooksKey)
@@ -42,6 +46,21 @@ class Webhooks(webhooksKey: String, mailgunWebhookHandler: MailgunWebhookHandler
         Ok(reply.toXML).as(XML)
       })
     }
+  }
+
+  def formstack(hashtag: String) = Action.async { request =>
+    FormstackWebhookParser.parse(request.body).fold[Future[Result]]({ error =>
+      Logger.warn(s"Failed to parse Formstack webhook! Error: $error, Request: $request")
+      Future.successful(InternalServerError("Sorry, you didn't send me what I was expecting"))
+    }, { payload =>
+      if (payload.handshakeKey != webhooksKey)
+        Future.successful(BadRequest("Invalid API key"))
+      else {
+        formstackWebhookHandler.handlePayload(hashtag, payload) map { u =>
+          Ok("Handled payload")
+        }
+      }
+    })
   }
 
 }
