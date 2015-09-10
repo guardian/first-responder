@@ -1,28 +1,35 @@
 package controllers
 
+import formstack.FormstackFormCreator
 import models.Callout
 import play.api.mvc.{ Action, Controller }
 import store.Dynamo
 
-class Api(validApiKey: String, dynamo: Dynamo) extends Controller {
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
-  def createCallout(apiKey: String) = Action { request =>
+class Api(validApiKey: String, dynamo: Dynamo, formstack: FormstackFormCreator) extends Controller {
+
+  def createCallout(apiKey: String) = Action.async { request =>
     if (apiKey != validApiKey)
-      BadRequest("Invalid API key")
+      Future.successful(BadRequest("Invalid API key"))
     else {
-      request.body.asFormUrlEncoded.fold(BadRequest("Failed to parse POST body as a form")) { form =>
+      request.body.asFormUrlEncoded.fold(Future.successful(BadRequest("Failed to parse POST body as a form"))) { form =>
         val hashtag = for {
           values <- form.get("hashtag")
           head <- values.headOption
         } yield head
         hashtag match {
           case Some(ht) =>
-            val description = form.get("description").flatMap(_.headOption)
-            val callout = Callout(hashtag = ht, description = description)
-            dynamo.save(callout)
-            Created
+            formstack.createForm(ht) map { formstackId =>
+              // TODO add formstack form ID to Callout
+              val description = form.get("description").flatMap(_.headOption)
+              val callout = Callout(hashtag = ht, description = description)
+              dynamo.save(callout)
+              Created
+            }
           case None =>
-            BadRequest("Missing hashtag field")
+            Future.successful(BadRequest("Missing hashtag field"))
         }
       }
     }
