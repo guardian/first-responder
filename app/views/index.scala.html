@@ -2,7 +2,7 @@
 
 @import models.ModerationStatus
 
-@main("Callout - " + calloutName, callouts) {
+@main("Callout - " + calloutName,calloutName,  callouts) {
  
     	@if(calloutName.isEmpty) {
 		<div class="row">
@@ -15,15 +15,6 @@
 	    	</div><!-- end of col-md-12 -->
 	    </div><!-- end of row -->
     	} else {
-
-    	<div class="moderation-tools">
-	    	<ul class="moderation-options">
-	    	@ModerationStatus.values.map { m =>
-	    		<li><a href="/callout/@calloutName/@m.entryName">@m.label</a></li>
-	    	}
-	    	</ul>
-    	</div>
-
         <div class="col-sm-12 col-md-12 main no-padding">
           <div class="main-content">
             <div class="row contribution-list">

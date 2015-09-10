@@ -1,4 +1,4 @@
-@(title: String, callouts: Seq[Callout])(content: Html)
+@(title: String, calloutName: String, callouts: Seq[Callout])(content: Html)
 
 <!DOCTYPE html>
 
@@ -23,9 +23,8 @@
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                  @callout_list(callouts) 
-            </ul>
+           
+                  @callout_nav(calloutName,callouts) 
 
           </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

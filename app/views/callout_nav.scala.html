@@ -1,0 +1,23 @@
+@(calloutName: String, callouts: Seq[Callout])
+
+@import models.ModerationStatus
+
+<ul class="nav navbar-nav">
+@callouts.map { c =>
+	<li>
+	<a href="/callout/@c.hashtag">
+		<span>#@c.hashtag</span>	
+		<span class="datetime">@c.createdAt</span>
+  </a>
+	</li> 
+} 
+</ul>  
+@if(calloutName != ""){
+  <div class="moderation-tools">
+    <ul class="nav navbar-nav moderation-options">
+    @ModerationStatus.values.map { m =>
+      <li><a href="/callout/@calloutName/@m.entryName">@m.label</a></li>
+    }
+    </ul>
+  </div>
+  }
