@@ -68,28 +68,28 @@
   			<a href="/callout/@calloutName/@c.moderationStatus.entryName" class="btn btn-default btn-lg">Back</a>
   			@if(c.moderationStatus == ModerationStatus.JustIn){
   				<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Selected.entryName">
-	  				<button type="button" class="btn btn-success btn-lg">Select</button>
+	  				<button type="submit" class="btn btn-success btn-lg">Select</button>
 	  			</form>
 	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
-	  				<button type="button" class="btn btn-danger btn-lg">Discard</button>
+	  				<button type="submit" class="btn btn-danger btn-lg">Discard</button>
   				</form>
   			}
   			@if(c.moderationStatus == ModerationStatus.Selected){
   				<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Ready.entryName">
-	  				<button type="button" class="btn btn-success btn-lg">Ready</button>
+	  				<button type="submit" class="btn btn-success btn-lg">Ready</button>
 	  			</form>
 	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
-	  				<button type="button" class="btn btn-danger btn-lg">Discard</button>
+	  				<button type="submit" class="btn btn-danger btn-lg">Discard</button>
   				</form>
   			}
   			@if(c.moderationStatus == ModerationStatus.Ready){
 	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
-	  				<button type="button" class="btn btn-danger btn-lg">Discard</button>
+	  				<button type="submit" class="btn btn-danger btn-lg">Discard</button>
   				</form>
   			}
   			@if(c.moderationStatus == ModerationStatus.Discarded){
 	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Selected.entryName">
-	  				<button type="button" class="btn btn-success btn-lg">Revive</button>
+	  				<button type="submit" class="btn btn-success btn-lg">Revive</button>
   				</form>
   			}
 
