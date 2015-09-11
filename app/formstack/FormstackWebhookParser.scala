@@ -24,14 +24,14 @@ object FormstackWebhookParser {
     }
   }
 
-  private def findTextFields(form: Map[String, Seq[String]]): Map[String, String] = form.collect {
-    case (fieldName, Seq(TextualField(value), _*)) => (fieldName, value)
+  def findTextFields(form: Map[String, Seq[String]]): Map[String, String] = form.collect {
+    case (fieldName, Seq(TextualField(value), _*)) => (fieldName, value.trim)
   }
-  private def findEmailAddresses(form: Map[String, Seq[String]]): Iterable[String] = form.collect {
-    case (fieldName, Seq(EmailField(value), _*)) => value
+  def findEmailAddresses(form: Map[String, Seq[String]]): Iterable[String] = form.collect {
+    case (fieldName, Seq(EmailField(value), _*)) => value.trim
   }
-  private def findAttachmentUrls(form: Map[String, Seq[String]]): Iterable[String] = form.collect {
-    case (fieldName, Seq(FileField(value), _*)) => value
+  def findAttachmentUrls(form: Map[String, Seq[String]]): Iterable[String] = form.collect {
+    case (fieldName, Seq(FileField(value), _*)) => value.trim
   }
 
   private trait FieldSelector {
@@ -40,15 +40,15 @@ object FormstackWebhookParser {
   }
   private object TextualField extends FieldSelector {
     val regex =
-      """^value = (.*) field_type = (text|textarea|name|address|phone|creditcard|datetime|number|select|checkbox|matrix|richtext)$""".r
+      """(?s)value = (.*)field_type = (text|textarea|name|address|phone|creditcard|datetime|number|select|checkbox|matrix|richtext)""".r
   }
   private object EmailField extends FieldSelector {
     val regex =
-      """^value = (.*) field_type = email$""".r
+      """(?s)value = (.*)field_type = email$""".r
   }
   private object FileField extends FieldSelector {
     val regex =
-      """^value = (.*) field_type = file$""".r
+      """(?s)value = (.*)field_type = file$""".r
   }
 
 }
