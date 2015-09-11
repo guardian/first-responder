@@ -35,7 +35,11 @@
 						
 					}
 					<div class="caption">
-						<p>@c.contributor.email  @c.contributor.phone</p>
+						@if(c.contributor.email.isEmpty && c.contributor.phone.isEmpty) {
+							<p><i>Anonymous</i></p>
+						}else {
+							<p>@c.contributor.email  @c.contributor.phone</p>
+						}
 					</div>
 					</div>
 			    </a>  
