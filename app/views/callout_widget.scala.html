@@ -29,7 +29,7 @@
                 </p>               
                 <p>
                   <a class="btn btn-primary" href="sms:+441464254016&body=@callout.hashtag" target="_blank">Text us +44 (0)1464 254016</a>
-                  <div class="info">Add <b>@callout.hashtag</b> as the first word of your text message</div>
+                  <div class="info">Add "<b>@callout.hashtag</b>"" as the first word of your text message</div>
                 </p>
                 <p>
                   <a class="btn btn-primary" href="https://twitter.com/intent/tweet?text=@@guardian%20%23@callout.hashtag" target="_blank">Tweet us @@guardian #@callout.hashtag</a>
@@ -38,10 +38,11 @@
                   <a class="btn btn-primary" href="https://witness.theguardian.com/assignment/submitastory#contribute" target="_blank">Submit via GuardianWitness</a>
                 </p>
                 <p>
-                  <a class="btn btn-primary" href="">Submit via simple form</a>
+                  <a class="btn btn-primary" href="javascript:jQuery('#formstack-embed').toggleClass('hidden');">Submit via simple form</a>
                 </p>
+                <div id="formstack-embed" class="hidden">
                 @formstackEmbed
-
+                </div>
             </div>
         </div>
       </div>
