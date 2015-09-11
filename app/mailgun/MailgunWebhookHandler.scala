@@ -29,7 +29,7 @@ class MailgunWebhookHandler(ws: WSAPI, mailgunApiKey: String, s3: S3, dynamo: Dy
         subject = payload.subject,
         body = payload.body,
         attachments = attachments,
-        notes = ""
+        notes = None
       )
     }
     fContribution map { c =>

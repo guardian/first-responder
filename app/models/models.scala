@@ -84,7 +84,7 @@ case class Contribution(
   body: String,
   attachments: Seq[Attachment],
   moderationStatus: ModerationStatus = ModerationStatus.JustIn,
-  notes: String)
+  notes: Option[String])
 object Contribution {
   implicit val jsonFormat = Json.format[Contribution]
 }

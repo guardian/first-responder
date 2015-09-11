@@ -25,7 +25,7 @@ class FormstackWebhookHandler(ws: WSAPI, dynamo: Dynamo) {
         subject = None,
         body = toBody(payload.textFields),
         attachments = a,
-        notes = ""
+        notes = None
       )
       dynamo.save(contribution)
     }
