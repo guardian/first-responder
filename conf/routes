@@ -8,6 +8,9 @@ GET         /callout/:hashtag                         controllers.Application.sh
 GET         /callout/:hashtag/:status                 controllers.Application.showCallout(hashtag:String, status: ModerationStatus)
 GET         /callout/:hashtag/contribution/:id        controllers.Application.showContribution(hashtag:String, id:String)
 POST        /callout/:hashtag/contribution/:id/moderation/:status        controllers.Application.updateModerationStatus(hashtag:String, id:String, status: ModerationStatus)
+POST        /callout/:hashtag/contribution/:id/notes/update       controllers.Application.updateNotes(hashtag:String, id:String)
+
+# Widget
 GET         /widget/:hashtag                          controllers.Application.showCalloutWidget(hashtag:String)
 
 # Healthcheck

@@ -13,10 +13,10 @@
     	<p>Recieved: @c.createdAt.toString("dd MMM yyyy - HH:mm:ss")</p>
     	</div>
     	<div class="block">
-    		<form>
+    		<form method="POST" action="/callout/@calloutName/contribution/@c.id/notes/update">
 			  <div class="form-group">
 			    <label for="notes">Notes</label>
-			    <textarea  class="form-control" width="100%" id="notes" placeholder="Enter some notes here..." rows="10" ></textarea>
+			    <textarea  class="form-control" width="100%" id="notes" name="notes" placeholder="Enter some notes here..." rows="10">@c.notes</textarea>
 			  </div>
 			  
 			  <button type="submit" class="btn btn-success">Save</button>

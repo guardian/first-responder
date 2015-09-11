@@ -51,6 +51,26 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
       case None => NotFound
     }
   }
+  def updateNotes(hashtag: String, id: String) = AuthAction { request =>
+    val notes: Option[String] = for {
+      form <- request.body.asFormUrlEncoded
+      field <- form.get("notes")
+      notes <- field.headOption
+    } yield {
+      notes
+    }
+    notes match {
+      case Some(n) => dynamo.findContribution(hashtag: String, id: String) match {
+        case Some(contribution) =>
+          dynamo.updateNotes(contribution, n)
+
+          Redirect(routes.Application.showContribution(hashtag, id)).flashing("info" -> "Successfully saved your notes")
+        case None => NotFound
+      }
+      case None => BadRequest("Missing notes field")
+    }
+
+  }
 
   def healthcheck = Action {
     // TODO check DynamoDB health?

@@ -24,7 +24,8 @@ class FormstackWebhookHandler(ws: WSAPI, dynamo: Dynamo) {
         channel = Channel.Form,
         subject = None,
         body = toBody(payload.textFields),
-        attachments = a
+        attachments = a,
+        notes = ""
       )
       dynamo.save(contribution)
     }

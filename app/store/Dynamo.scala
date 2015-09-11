@@ -109,6 +109,15 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
     )
     contribution.copy(moderationStatus = newStatus)
   }
+  def updateNotes(contribution: Contribution, newNotes: String): Contribution = {
+    contributions.updateItem(
+      new PrimaryKey(
+        "hashtag", contribution.hashtag,
+        "createdAt", contribution.createdAt.withZone(DateTimeZone.UTC).toString),
+      new AttributeUpdate("notes").put(newNotes)
+    )
+    contribution.copy(notes = newNotes)
+  }
 
   private def serialize[T: DynamoCodec](t: T): Item = implicitly[DynamoCodec[T]].toItem(t)
 
@@ -194,6 +203,7 @@ object Dynamo {
         .withString("body", contribution.body)
         .withList("attachments", attachments)
         .withString("moderationStatus", contribution.moderationStatus.entryName)
+        .withString("notes", contribution.notes)
     }
 
     override def fromItem(item: Item): Contribution = {
@@ -207,7 +217,8 @@ object Dynamo {
         subject = Option(item.getString("subject")),
         body = item.getString("body"),
         attachments = attachments,
-        moderationStatus = Option(item.getString("moderationStatus")).map(ModerationStatus.withName).getOrElse(ModerationStatus.JustIn)
+        moderationStatus = Option(item.getString("moderationStatus")).map(ModerationStatus.withName).getOrElse(ModerationStatus.JustIn),
+        notes = Option(item.getString("notes")).getOrElse("")
       )
     }
 

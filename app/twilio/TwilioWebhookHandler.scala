@@ -14,7 +14,8 @@ class TwilioWebhookHandler(dynamo: Dynamo) {
       channel = Channel.SMS,
       subject = None,
       body = payload.body,
-      attachments = Nil
+      attachments = Nil,
+      notes = ""
     )
     dynamo.save(contribution)
     contribution
