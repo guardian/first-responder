@@ -6,7 +6,7 @@ import play.api.libs.ws.WSAPI
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: String) {
+class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: String, baseUrl: String) {
 
   /**
    * Use the Formstack API to register a new form and corresponding Webhook.
@@ -45,9 +45,7 @@ class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: S
       ),
       "webhooks" -> Json.arr(
         Json.obj(
-          // TODO should load base URL from config
-          //"url" -> s"https://first-responder-hack.herokuapp.com/webhooks/formstack/$hashtag",
-          "url" -> "http://requestb.in/w88n43w8",
+          "url" -> s"$baseUrl/webhooks/formstack/$hashtag",
           "handshake_key" -> webhookKey,
           "include_field_type" -> true
         )

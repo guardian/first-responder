@@ -71,7 +71,8 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   val formstackFormCreator = {
     val oauthToken = mandatoryConfigString("formstack.oauthToken")
-    new FormstackFormCreator(wsApi, webhooksKey, oauthToken)
+    val baseUrl = mandatoryConfigString("baseUrl")
+    new FormstackFormCreator(wsApi, webhooksKey, oauthToken, baseUrl)
   }
   val formstackWebhookHandler = new FormstackWebhookHandler(wsApi, dynamo)
 

@@ -22,9 +22,8 @@ class Api(validApiKey: String, dynamo: Dynamo, formstack: FormstackFormCreator) 
         hashtag match {
           case Some(ht) =>
             formstack.createForm(ht) map { formstackId =>
-              // TODO add formstack form ID to Callout
               val description = form.get("description").flatMap(_.headOption)
-              val callout = Callout(hashtag = ht, description = description)
+              val callout = Callout(hashtag = ht, description = description, formstackId = Some(formstackId))
               dynamo.save(callout)
               Created
             }

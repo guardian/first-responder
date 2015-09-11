@@ -167,13 +167,15 @@ object Dynamo {
         .withPrimaryKey("hashtag", callout.hashtag)
         .withString("createdAt", callout.createdAt.withZone(DateTimeZone.UTC).toString)
         .withOptString("description", callout.description)
+        .withOptString("formstackId", callout.formstackId)
     }
 
     override def fromItem(item: Item): Callout = {
       Callout(
         hashtag = item.getString("hashtag"),
         createdAt = new DateTime(item.getString("createdAt")).withZone(DateTimeZone.UTC),
-        description = Option(item.getString("description"))
+        description = Option(item.getString("description")),
+        formstackId = Option(item.getString("formstackId"))
       )
     }
   }

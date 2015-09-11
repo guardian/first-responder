@@ -16,7 +16,8 @@ import enumeratum._
 case class Callout(
   hashtag: String,
   createdAt: DateTime = DateTime.now,
-  description: Option[String])
+  description: Option[String],
+  formstackId: Option[String])
 
 object Callout {
   implicit val jsonFormat = Json.format[Callout]
@@ -80,7 +81,7 @@ case class Contribution(
   channel: Channel,
   createdAt: DateTime = DateTime.now.withZone(DateTimeZone.UTC),
   subject: Option[String],
-  body: String, // TODO for FormStack, just dump all Qs and As into the body?
+  body: String,
   attachments: Seq[Attachment],
   moderationStatus: ModerationStatus = ModerationStatus.JustIn)
 object Contribution {
