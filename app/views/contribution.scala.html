@@ -5,37 +5,61 @@
 @main("#" + calloutName, calloutName, callouts, Some(c.moderationStatus)) {
 
   <div class="row contribution">
-    <div class="col-md-12">
-    	
-    	<p class="hidden">Id: @c.id</p>
-    	<p>Recieved: @c.createdAt.toString("dd MMM yyyy - HH:mm:ss")</p>
+  	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+		<div class="block">
+		<label for="contributor">Contributor</label>
+  		<p class="hidden">Id: @c.id</p>
     	<p>From: <a href="mailto:@c.contributor.email">@c.contributor.email</a> @c.contributor.phone</p>
-		<div class="contribution"> 	
-	    	<div class="subject">@c.subject</div>
-	    	<div class="body">@c.body</div>
-	    	<div class="media">
-	    		@if(c.attachments.isEmpty) {
-	    		   <i>No media found</i>
-	    		} else {
-	    		   <div class="row">
-    			   @c.attachments.map { a =>
-					@if(a.mimeType == "image/jpeg" || a.mimeType == "image/png" || a.mimeType == "image/gif") {
-						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-							<img src="@a.url" alt=""/>
-						</div>
-					}
-					@if(a.mimeType == "video/quicktime" || a.mimeType == "video/mp4") {
-						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-							<video controls="true"  src="@a.url">
-							</video>
-						</div>
-					}
-					</div>
-				  } 
-				}
-	    	</div>
+    	<p>Recieved: @c.createdAt.toString("dd MMM yyyy - HH:mm:ss")</p>
     	</div>
-
+    	<div class="block">
+    		<form>
+			  <div class="form-group">
+			    <label for="notes">Notes</label>
+			    <textarea  class="form-control" width="100%" id="notes" placeholder="Enter some notes here..."></textarea>
+			  </div>
+			  
+			  <button type="submit" class="btn btn-success">Save</button>
+			</form>
+    	</div>
+  	</div>
+    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+    	<div class="block">
+    	<label>Message</label> 		
+    	<div class="subject">@c.subject</div>
+    	@if(c.body.isEmpty) {
+		   <div class="body">
+	       	<p>No message body provided.</p>
+	       </div>
+		} else {
+		   <div class="body">
+	       	@c.body
+	       </div>
+        }
+        </div>
+    	<div class="block media">
+    		<label>Attachments</label> 	
+    		@if(c.attachments.isEmpty) {
+    		   <i>No media found</i>
+    		} else {
+    		   <div class="row">
+			   @c.attachments.map { a =>
+				@if(a.mimeType == "image/jpeg" || a.mimeType == "image/png" || a.mimeType == "image/gif") {
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+						<img src="@a.url" alt=""/>
+					</div>
+				}
+				@if(a.mimeType == "video/quicktime" || a.mimeType == "video/mp4") {
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						<video controls="true"  src="@a.url">
+						</video>
+					</div>
+				}
+				</div>
+			  } 
+			}
+    	</div>
+    	
     </div><!-- end of col-md-12 -->
   </div><!-- end of row -->
   <div class="row action-bar">
@@ -44,28 +68,28 @@
   			<a href="/callout/@calloutName/@c.moderationStatus.entryName" class="btn btn-default btn-lg">Back</a>
   			@if(c.moderationStatus == ModerationStatus.JustIn){
   				<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Selected.entryName">
-	  				<button class="btn btn-success btn-lg">Select</button>
+	  				<button type="button" class="btn btn-success btn-lg">Select</button>
 	  			</form>
 	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
-	  				<button class="btn btn-danger btn-lg">Discard</button>
+	  				<button type="button" class="btn btn-danger btn-lg">Discard</button>
   				</form>
   			}
   			@if(c.moderationStatus == ModerationStatus.Selected){
   				<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Ready.entryName">
-	  				<button class="btn btn-success btn-lg">Ready</button>
+	  				<button type="button" class="btn btn-success btn-lg">Ready</button>
 	  			</form>
 	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
-	  				<button class="btn btn-danger btn-lg">Discard</button>
+	  				<button type="button" class="btn btn-danger btn-lg">Discard</button>
   				</form>
   			}
   			@if(c.moderationStatus == ModerationStatus.Ready){
 	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
-	  				<button class="btn btn-danger btn-lg">Discard</button>
+	  				<button type="button" class="btn btn-danger btn-lg">Discard</button>
   				</form>
   			}
   			@if(c.moderationStatus == ModerationStatus.Discarded){
 	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Selected.entryName">
-	  				<button class="btn btn-success btn-lg">Revive</button>
+	  				<button type="button" class="btn btn-success btn-lg">Revive</button>
   				</form>
   			}
 
