@@ -1,11 +1,16 @@
 package controllers
 
 import com.gu.googleauth.GoogleAuthConfig
+import formstack.FormstackEmbedder
 import models._
 import play.api.mvc._
+import play.twirl.api.Html
 import store.Dynamo
 
-class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Controller with AuthActions {
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
+class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, val authConfig: GoogleAuthConfig) extends Controller with AuthActions {
 
   def index = AuthAction { request =>
     val callouts = dynamo.findCallouts()
@@ -78,11 +83,16 @@ class Application(dynamo: Dynamo, val authConfig: GoogleAuthConfig) extends Cont
   }
 
   // Public widget test page
-  def showCalloutWidget(hashtag: String) = Action { request =>
+  def showCalloutWidget(hashtag: String) = Action.async { request =>
     dynamo.findCalloutByHashtag(hashtag) match {
       case Some(callout) =>
-        Ok(views.html.callout_widget(callout))
-      case None => NotFound
+        val formstackEmbed: Future[Option[Html]] = callout.formstackId.fold[Future[Option[Html]]](Future.successful(None)) { id =>
+          formstackEmbedder.getEmbedCode(id).map(Some(_))
+        }
+        formstackEmbed.map { embed =>
+          Ok(views.html.callout_widget(callout, embed))
+        }
+      case None => Future.successful(NotFound)
     }
   }
 

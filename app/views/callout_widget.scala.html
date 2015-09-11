@@ -1,4 +1,4 @@
-@(callout: Callout)
+@(callout: Callout, formstackEmbed: Option[Html])
 
 <!DOCTYPE html>
 
@@ -37,9 +37,10 @@
                 <p>
                   <a class="btn btn-primary" href="https://witness.theguardian.com/assignment/submitastory#contribute" target="_blank">Submit via GuardianWitness</a>
                 </p>
-                  <p>
+                <p>
                   <a class="btn btn-primary" href="">Submit via simple form</a>
                 </p>
+                @formstackEmbed
 
             </div>
         </div>
