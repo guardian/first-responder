@@ -5,7 +5,22 @@ class AppLoader extends ApplicationLoader {
   override def load(context: Context): Application = {
     val components = new AppComponents(context)
 
-    // TODO ascii art!!
+    println(
+      """
+        |    WELCOME TO FIRST RESPONDER
+        |           .--._.--.
+        |          ( O     O )
+        |          /   . .   \
+        |         .`._______.'.
+        |        /(           )\
+        |      _/  \  \   /  /  \_
+        |   .~   `  \  \ /  /  '   ~.
+        |  {    -.   \  V  /   .-    }
+        |_ _`.    \  |  |  |  /    .'_ _
+        |>_       _} |  |  | {_       _<
+        | /. - ~ ,_-'  .^.  `-_, ~ - .\
+        |         '-'|/   \|`-`
+      """.stripMargin)
 
     components.application
   }
