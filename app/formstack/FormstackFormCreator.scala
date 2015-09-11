@@ -8,9 +8,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: String) {
 
-  // TODO
-  def handleWebhook() = ???
-
   /**
    * Use the Formstack API to register a new form and corresponding Webhook.
    * Formstack will send us a Webhook POST every time somebody submits the form.
@@ -31,6 +28,10 @@ class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: S
       "name" -> s"Breaking news - $hashtag",
       "fields" -> Json.arr(
         Json.obj(
+          "field_type" -> "email",
+          "label" -> "Email"
+        ),
+        Json.obj(
           "field_type" -> "textarea",
           "label" -> "Tell me something I don't know"
         ),
@@ -47,7 +48,8 @@ class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: S
           // TODO should load base URL from config
           //"url" -> s"https://first-responder-hack.herokuapp.com/webhooks/formstack/$hashtag",
           "url" -> "http://requestb.in/w88n43w8",
-          "handshake_key" -> webhookKey
+          "handshake_key" -> webhookKey,
+          "include_field_type" -> true
         )
       )
     )

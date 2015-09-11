@@ -11,30 +11,34 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class FormstackWebhookHandler(ws: WSAPI, dynamo: Dynamo) {
 
   def handlePayload(hashtag: String, payload: Payload): Future[Unit] = {
-    val attachment: Future[Option[Attachment]] = {
-      val option: Option[Future[Attachment]] = payload.attachmentUrl.map { url =>
-        ws.url(url).head().map { resp =>
-          val mimeType = resp.header("Content-Type").getOrElse("unknown")
-          Attachment(url, mimeType)
-        }
-      }
-      option match {
-        case Some(fA) => fA.map(a => Some(a))
-        case None => Future.successful(None)
+    val attachments: Future[Seq[Attachment]] = Future.traverse(payload.attachmentUrls) { url =>
+      ws.url(url).head().map { resp =>
+        val mimeType = resp.header("Content-Type").getOrElse("unknown")
+        Attachment(url, mimeType)
       }
     }
-
-    attachment map { a =>
+    attachments map { a =>
       val contribution = Contribution(
         hashtag = hashtag,
         contributor = Contributor.Anonymous,
         channel = Channel.Form,
         subject = None,
-        body = payload.body,
-        attachments = a.toSeq
+        body = toBody(payload.textFields),
+        attachments = a
       )
       dynamo.save(contribution)
     }
+  }
+
+  private def toBody(fields: Map[String, String]): String = {
+    fields.map {
+      case ((k, v)) =>
+        s"""
+        |$k:
+        |$v
+        |
+      """.stripMargin
+    }.mkString
   }
 
 }
