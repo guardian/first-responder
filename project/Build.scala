@@ -31,7 +31,7 @@ object FirstResponderBuild extends Build {
         "com.twilio.sdk" % "twilio-java-sdk" % "4.5.0",
         "org.scalatestplus" %% "play" % "1.1.1" % "test"
       ),
-      riffRaffPackageName := "content-api-itunes-rss",
+      riffRaffPackageName := "content-api-first-responder",
       riffRaffManifestProjectName := "Content Platforms::first-responder",
       riffRaffPackageType := (packageZipTarball in config("universal")).value,
       riffRaffBuildIdentifier := sys.env.getOrElse("BUILD_NUMBER", "DEV"),
