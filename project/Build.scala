@@ -14,7 +14,7 @@ object FirstResponderBuild extends Build {
     val awsSdk = "1.10.16"
   }
 
-  lazy val project = Project(id = "first-responder", base = file("."))
+  lazy val project = Project(id = "content-api-first-responder", base = file("."))
     .enablePlugins(PlayScala)
     .enablePlugins(RiffRaffArtifact)
     .settings(scalariformSettings)
