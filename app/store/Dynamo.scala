@@ -16,8 +16,6 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
 
   import Dynamo._
 
-  initTables()
-
   private val contributions = db.getTable(contributionsTableName)
   private val callouts = db.getTable(calloutsTableName)
 
@@ -127,42 +125,6 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
   private def serialize[T: DynamoCodec](t: T): Item = implicitly[DynamoCodec[T]].toItem(t)
 
   private def deserialize[T: DynamoCodec](item: Item): T = implicitly[DynamoCodec[T]].fromItem(item)
-
-  private def initTables(): Unit = {
-    val tables = db.listTables().iterator().asScala.toSeq
-
-    if (!tables.exists(_.getTableName == contributionsTableName)) {
-      Logger.info(s"Creating DynamoDB table: $contributionsTableName")
-      db.createTable(
-        contributionsTableName,
-        util.Arrays.asList(
-          new KeySchemaElement().withAttributeName("hashtag").withKeyType(KeyType.HASH),
-          new KeySchemaElement().withAttributeName("createdAt").withKeyType(KeyType.RANGE)
-        ),
-        util.Arrays.asList(
-          new AttributeDefinition().withAttributeName("hashtag").withAttributeType(ScalarAttributeType.S),
-          new AttributeDefinition().withAttributeName("createdAt").withAttributeType(ScalarAttributeType.S)
-        ),
-        new ProvisionedThroughput(1L, 1L)
-      )
-    }
-
-    if (!tables.exists(_.getTableName == calloutsTableName)) {
-      Logger.info(s"Creating DynamoDB table: $calloutsTableName")
-      db.createTable(
-        calloutsTableName,
-        util.Arrays.asList(
-          new KeySchemaElement().withAttributeName("hashtag").withKeyType(KeyType.HASH),
-          new KeySchemaElement().withAttributeName("createdAt").withKeyType(KeyType.RANGE)
-        ),
-        util.Arrays.asList(
-          new AttributeDefinition().withAttributeName("hashtag").withAttributeType(ScalarAttributeType.S),
-          new AttributeDefinition().withAttributeName("createdAt").withAttributeType(ScalarAttributeType.S)
-        ),
-        new ProvisionedThroughput(1L, 1L)
-      )
-    }
-  }
 }
 
 object Dynamo {
