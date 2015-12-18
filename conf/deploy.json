@@ -1,0 +1,22 @@
+{
+  "defaultStacks": [ "content-api" ],
+  "packages": {
+    "content-api-first-responder": {
+      "type": "autoscaling",
+      "data": {
+        "bucket": "content-api-dist"
+      }
+    }
+  },
+  "recipes": {
+    "default": {
+      "depends": [ "artifactUploadOnly", "deployOnly" ]
+    },
+    "artifactUploadOnly": {
+      "actions": [ "content-api-first-responder.uploadArtifacts" ]
+    },
+    "deployOnly": {
+      "actions": [ "content-api-first-responder.deploy" ]
+    }
+  }
+}
