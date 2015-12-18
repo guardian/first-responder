@@ -1,5 +1,5 @@
 {
-  "defaultStacks": [ "content-api" ],
+  "defaultStacks": [ "content-api-first-responder" ],
   "packages": {
     "content-api-first-responder": {
       "type": "autoscaling",
