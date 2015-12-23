@@ -1,0 +1,20 @@
+@(calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus], form: Form[controllers.Application.CreateCalloutData])(implicit messages: Messages)
+
+    @implicitFieldConstructor = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
+
+    @main("New callout", calloutName, callouts, moderationStatus ) {
+
+        <div class="col-xs-12" style="height:50px;"></div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-2 column">
+                @b3.form(routes.Application.createCallout) {
+                @b3.text(form("hashtag"), '_label -> "Hashtag", 'placeholder -> "Hashtag")
+                @b3.text(form("description"), '_label -> "Description", 'placeholder -> "Description")
+                @b3.free('_id -> "idFormGroup") {
+                    <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span> Save changes</button>
+                }
+            </div>
+        </div>
+    }
+}
+

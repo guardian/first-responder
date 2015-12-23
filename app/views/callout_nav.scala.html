@@ -3,6 +3,9 @@
 @import models.ModerationStatus
 
 <ul class="nav navbar-nav">
+
+	<li class="active"><a href="/callout/create"><span>Create new</span></a></li>
+
 @callouts.map { c =>
 	<li @if(c.hashtag == calloutName){ class="active" }>
 	<a href="/callout/@c.hashtag">

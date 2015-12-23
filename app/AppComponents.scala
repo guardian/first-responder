@@ -6,16 +6,17 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.s3.AmazonS3Client
 import com.gu.googleauth.GoogleAuthConfig
 import controllers.{ Api, Webhooks, Auth, Application }
-import formstack.{ FormstackEmbedder, FormstackWebhookHandler, FormstackFormCreator }
+import formstack.{ DummyFormStack, FormstackEmbedder, FormstackWebhookHandler, FormstackFormCreator }
 import mailgun.MailgunWebhookHandler
 import org.joda.time.Duration
 import play.api.ApplicationLoader.Context
+import play.api.i18n.{ DefaultLangs, DefaultMessagesApi, MessagesApi }
 import play.api.libs.ws.ning.NingWSComponents
-import play.api.BuiltInComponentsFromContext
+import play.api.{ Mode, BuiltInComponentsFromContext }
 import play.api.routing.Router
-import router.Routes
 import store.{ Dynamo, S3 }
 import twilio.TwilioWebhookHandler
+import router.Routes
 
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) with NingWSComponents {
 
@@ -71,13 +72,17 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   val formstackOauthToken = mandatoryConfigString("formstack.oauthToken")
   val formstackFormCreator = {
-    val baseUrl = mandatoryConfigString("baseUrl")
-    new FormstackFormCreator(wsApi, webhooksKey, formstackOauthToken, baseUrl)
+
+    if (environment.mode == Mode.Prod) {
+      val baseUrl = mandatoryConfigString("baseUrl")
+      new FormstackFormCreator(wsApi, webhooksKey, formstackOauthToken, baseUrl)
+    } else { new DummyFormStack }
   }
   val formstackWebhookHandler = new FormstackWebhookHandler(wsApi, dynamo)
   val formstackEmbedder = new FormstackEmbedder(wsApi, formstackOauthToken)
 
-  val appController = new Application(dynamo, formstackEmbedder, googleAuthConfig)
+  val messagesApi: MessagesApi = new DefaultMessagesApi(environment, configuration, new DefaultLangs(configuration))
+  val appController = new Application(dynamo, formstackEmbedder, formstackFormCreator, messagesApi, googleAuthConfig)
   val authController = new Auth(googleAuthConfig, wsApi)
   val webhooksController = new Webhooks(webhooksKey, mailgunWebhookHandler, twilioWebhookHandler, formstackWebhookHandler)
   val apiController = new Api(apiKey, dynamo, formstackFormCreator)

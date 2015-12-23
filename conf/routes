@@ -3,30 +3,33 @@
 # ~~~~
 
 # Home page
-GET         /                                         controllers.Application.index
-GET         /callout/:hashtag                         controllers.Application.showCalloutJustIn(hashtag:String)
-GET         /callout/:hashtag/:status                 controllers.Application.showCallout(hashtag:String, status: ModerationStatus)
-GET         /callout/:hashtag/contribution/:id        controllers.Application.showContribution(hashtag:String, id:String)
+GET         /callout/create                                              controllers.Application.createCalloutPage
+POST        /callout/create                                              controllers.Application.createCallout
+
+GET         /                                                            controllers.Application.index
+GET         /callout/:hashtag                                            controllers.Application.showCalloutJustIn(hashtag:String)
+GET         /callout/:hashtag/:status                                    controllers.Application.showCallout(hashtag:String, status: ModerationStatus)
+GET         /callout/:hashtag/contribution/:id                           controllers.Application.showContribution(hashtag:String, id:String)
 POST        /callout/:hashtag/contribution/:id/moderation/:status        controllers.Application.updateModerationStatus(hashtag:String, id:String, status: ModerationStatus)
-POST        /callout/:hashtag/contribution/:id/notes/update       controllers.Application.updateNotes(hashtag:String, id:String)
+POST        /callout/:hashtag/contribution/:id/notes/update              controllers.Application.updateNotes(hashtag:String, id:String)
 
 # Widget
-GET         /widget/:hashtag                          controllers.Application.showCalloutWidget(hashtag:String)
+GET         /widget/:hashtag                                             controllers.Application.showCalloutWidget(hashtag:String)
 
 # Healthcheck
-GET         /healthcheck                              controllers.Application.healthcheck
+GET         /healthcheck                                                 controllers.Application.healthcheck
 
 # Webhooks
-POST        /webhooks/mailgun                         controllers.Webhooks.mailgun(key: String)
-POST        /webhooks/twilio                          controllers.Webhooks.twilio(key: String)
-POST        /webhooks/formstack/:hashtag                          controllers.Webhooks.formstack(hashtag: String)
+POST        /webhooks/mailgun                                            controllers.Webhooks.mailgun(key: String)
+POST        /webhooks/twilio                                             controllers.Webhooks.twilio(key: String)
+POST        /webhooks/formstack/:hashtag                                 controllers.Webhooks.formstack(hashtag: String)
 
 # API
-POST        /api/callouts                             controllers.Api.createCallout(apiKey: String)
+POST        /api/callouts                                                controllers.Api.createCallout(apiKey: String)
 
 # Auth
-GET         /login                                    controllers.Auth.login
-GET         /oauth2callback                           controllers.Auth.oauth2Callback
+GET         /login                                                       controllers.Auth.login
+GET         /oauth2callback                                              controllers.Auth.oauth2Callback
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                             controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                                                controllers.Assets.versioned(path="/public", file: Asset)
