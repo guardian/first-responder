@@ -1,6 +1,6 @@
 package controllers
 
-import formstack.{ FormCreator, FormstackFormCreator }
+import formstack.FormCreator
 import models.Callout
 import play.api.mvc.{ Action, Controller }
 import store.Dynamo
@@ -8,7 +8,7 @@ import store.Dynamo
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class Api(validApiKey: String, dynamo: Dynamo, formstack: FormCreator) extends Controller {
+class Api(validApiKey: String, dynamo: Dynamo, formCreator: FormCreator) extends Controller {
 
   def createCallout(apiKey: String) = Action.async { request =>
     if (apiKey != validApiKey)
@@ -21,7 +21,7 @@ class Api(validApiKey: String, dynamo: Dynamo, formstack: FormCreator) extends C
         } yield head
         hashtag match {
           case Some(ht) =>
-            formstack.createForm(ht) map { formstackId =>
+            formCreator.createForm(ht) map { formstackId =>
               val description = form.get("description").flatMap(_.headOption)
               val callout = Callout(hashtag = ht, description = description, formstackId = Some(formstackId))
               dynamo.save(callout)

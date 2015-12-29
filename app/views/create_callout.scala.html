@@ -1,4 +1,4 @@
-@(calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus], form: Form[controllers.Application.CreateCalloutData])(implicit messages: Messages)
+@(calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus], form: Form[controllers.Forms.CreateCalloutData])(implicit messages: Messages)
 
     @implicitFieldConstructor = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
 
