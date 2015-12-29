@@ -1,4 +1,4 @@
-@(calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus], form: Form[controllers.Forms.CreateCalloutData])(implicit messages: Messages)
+@(calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus], form: Form[controllers.Forms.CreateCalloutData])(implicit messages: Messages, flash: Flash)
 
     @implicitFieldConstructor = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
 
@@ -8,13 +8,13 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-2 column">
                 @b3.form(routes.Application.createCallout) {
-                @b3.text(form("hashtag"), '_label -> "Hashtag", 'placeholder -> "Hashtag")
-                @b3.text(form("description"), '_label -> "Description", 'placeholder -> "Description")
-                @b3.free('_id -> "idFormGroup") {
-                    <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span> Save changes</button>
+                    @b3.text(form("hashtag"), '_label -> "Hashtag", 'placeholder -> "Hashtag")
+                    @b3.text(form("description"), '_label -> "Description", 'placeholder -> "Description")
+                    @b3.free('_id -> "idFormGroup") {
+                        <button type="submit" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span> Save changes</button>
+                    }
                 }
             </div>
         </div>
-    }
 }
 

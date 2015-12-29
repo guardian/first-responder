@@ -14,7 +14,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCreator: FormCreator, val messagesApi: MessagesApi, val authConfig: GoogleAuthConfig) extends Controller with AuthActions
     with I18nSupport {
 
-  def index = AuthAction { request =>
+  def index = AuthAction { implicit request =>
     val callouts = dynamo.findCallouts()
     val contributions = dynamo.findLatestJustInContributions()
     Ok(views.html.index("", callouts, contributions, ModerationStatus.JustIn))
@@ -22,7 +22,7 @@ class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCrea
 
   def showCalloutJustIn(hashtag: String) = showCallout(hashtag, ModerationStatus.JustIn)
 
-  def showCallout(hashtag: String, status: ModerationStatus) = AuthAction { request =>
+  def showCallout(hashtag: String, status: ModerationStatus) = AuthAction { implicit request =>
     val callouts = dynamo.findCallouts()
     val contributions = dynamo.findContributionsByHashtagAndStatus(hashtag, status)
     Ok(views.html.index(hashtag, callouts, contributions, status))
@@ -31,30 +31,26 @@ class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCrea
   def createCalloutPage = AuthAction { implicit request =>
     val callouts = dynamo.findCallouts()
 
-    Ok(views.html.create_callout("ccc", callouts, Some(ModerationStatus.JustIn), Forms.createCalloutForm))
+    Ok(views.html.create_callout("", callouts, None, Forms.createCalloutForm))
   }
 
   def createCallout = AuthAction.async { implicit request =>
 
     Forms.createCalloutForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful(BadRequest("Failed to validate the form"))
+        Future.successful(BadRequest(views.html.create_callout("", dynamo.findCallouts(), None, formWithErrors)))
       },
       calloutForm => {
         formCreator.createForm(calloutForm.hashtag) map { formstackId =>
           val callout = Callout(hashtag = calloutForm.hashtag, description = calloutForm.description, formstackId = Some(formstackId))
           dynamo.save(callout)
-
-          val callouts = dynamo.findCallouts()
-          val contributions = dynamo.findContributionsByHashtagAndStatus(calloutForm.hashtag, ModerationStatus.JustIn)
-
-          Ok(views.html.index(calloutForm.hashtag, callouts, contributions, ModerationStatus.JustIn)).flashing("info" -> "Successfully created a new callout!")
+          Redirect(routes.Application.showCalloutJustIn(calloutForm.hashtag)).flashing("info" -> "Successfully created a new callout!")
         }
       }
     )
   }
 
-  def showContribution(hashtag: String, id: String) = AuthAction { request =>
+  def showContribution(hashtag: String, id: String) = AuthAction { implicit request =>
     dynamo.findContribution(hashtag, id) match {
       case Some(contribution) =>
         val callouts = dynamo.findCallouts()
@@ -84,6 +80,7 @@ class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCrea
       case None => NotFound
     }
   }
+
   def updateNotes(hashtag: String, id: String) = AuthAction { request =>
     val notes: Option[String] = for {
       form <- request.body.asFormUrlEncoded
