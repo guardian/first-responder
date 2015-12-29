@@ -2,7 +2,7 @@
 
   @callouts.map { c =>
 	<li>
-        <a href="/callout/@c.hashtag">
+        <a href="@routes.Application.showCalloutJustIn(c.hashtag)">
             <span>#@c.hashtag</span>
             <span class="datetime">@c.createdAt</span>
         </a>

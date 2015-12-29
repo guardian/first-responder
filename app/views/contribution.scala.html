@@ -13,7 +13,7 @@
     	<p>Recieved: @c.createdAt.toString("dd MMM yyyy - HH:mm:ss")</p>
     	</div>
     	<div class="block">
-    		<form method="POST" action="/callout/@calloutName/contribution/@c.id/notes/update">
+    		<form method="POST" action="@routes.Application.updateNotes(calloutName, c.id)">
 			  <div class="form-group">
 			    <label for="notes">Notes</label>
 			    <textarea  class="form-control" width="100%" id="notes" name="notes" placeholder="Enter some notes here..." rows="10">@c.notes</textarea>
@@ -68,30 +68,30 @@
   <div class="row action-bar">
     <div class="col-md-12">
     	<div class="action-buttons">
-  			<a href="/callout/@calloutName/@c.moderationStatus.entryName" class="btn btn-default btn-lg">Back</a>
+  			<a href="@routes.Application.showCallout(calloutName, c.moderationStatus)" class="btn btn-default btn-lg">Back</a>
   			@if(c.moderationStatus == ModerationStatus.JustIn){
-  				<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Selected.entryName">
+  				<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Selected)">
 	  				<button type="submit" class="btn btn-success btn-lg">Select</button>
 	  			</form>
-	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
+	  			<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Discarded)">
 	  				<button type="submit" class="btn btn-danger btn-lg">Discard</button>
   				</form>
   			}
   			@if(c.moderationStatus == ModerationStatus.Selected){
-  				<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Ready.entryName">
+  				<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Ready)">
 	  				<button type="submit" class="btn btn-success btn-lg">Ready</button>
 	  			</form>
-	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
+	  			<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Discarded)">
 	  				<button type="submit" class="btn btn-danger btn-lg">Discard</button>
   				</form>
   			}
   			@if(c.moderationStatus == ModerationStatus.Ready){
-	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Discarded.entryName">
+	  			<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Discarded)">
 	  				<button type="submit" class="btn btn-danger btn-lg">Discard</button>
   				</form>
   			}
   			@if(c.moderationStatus == ModerationStatus.Discarded){
-	  			<form method="POST" action="/callout/@calloutName/contribution/@c.id/moderation/@ModerationStatus.Selected.entryName">
+	  			<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Selected)">
 	  				<button type="submit" class="btn btn-success btn-lg">Revive</button>
   				</form>
   			}

@@ -8,7 +8,7 @@
         <div class="col-md-12">
         <div class="row">
           @contributions.map { c =>
-            <a class="trail col-xs-12 col-sm-6 col-md-3 col-lg-3 no-padding" href="/callout/@c.hashtag/contribution/@c.id">
+            <a class="trail col-xs-12 col-sm-6 col-md-3 col-lg-3 no-padding" href="@routes.Application.showContribution(c.hashtag, c.id)">
                 <div class="trail-content">
                 @if(c.attachments.isEmpty) {
                    <div class="body">
