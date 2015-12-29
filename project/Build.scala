@@ -29,6 +29,7 @@ object FirstResponderBuild extends Build {
         "com.beachape" %% "enumeratum-play" % "1.3.1",
         "com.gu" %% "play-googleauth" % "0.3.1",
         "com.twilio.sdk" % "twilio-java-sdk" % "4.5.0",
+        "com.adrianhurt" %% "play-bootstrap3" % "0.4.5-P24",
         "org.scalatestplus" %% "play" % "1.1.1" % "test"
       ),
       riffRaffPackageName := "content-api-first-responder",

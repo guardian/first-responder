@@ -1,4 +1,4 @@
-@(title: String, calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus])(content: Html)
+@(title: String, calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus])(content: Html)(implicit flash: Flash)
 
 <!DOCTYPE html>
 
@@ -36,7 +36,10 @@
       <div class="container-fluid wrapper">
         <div class="row wrapper">
         <div class="col-sm-12 ">
-        @content
+            @for(info <- flash.get("info")) {
+                <div class="alert alert-success" role="alert">@info</div>
+            }
+            @content
         </div>
         </div>
       </div>

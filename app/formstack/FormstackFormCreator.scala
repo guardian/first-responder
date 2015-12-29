@@ -6,7 +6,20 @@ import play.api.libs.ws.WSAPI
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: String, baseUrl: String) {
+trait FormCreator {
+
+  /**
+   * Register a new form for a callout.
+   * The real implementation uses the FormStack API to do so.
+   *
+   * @param hashtag the callout's hashtag
+   * @return the ID of the form that was created
+   */
+  def createForm(hashtag: String): Future[String]
+
+}
+
+class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: String, baseUrl: String) extends FormCreator {
 
   /**
    * Use the Formstack API to register a new form and corresponding Webhook.
@@ -52,5 +65,13 @@ class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: S
       )
     )
   }
+}
+
+/**
+ * Form creator for use in dev environment because we won't want to spam FormStack.
+ */
+class DummyFormCreator extends FormCreator {
+
+  def createForm(hashtag: String): Future[String] = Future.successful("dummy-123123123")
 
 }
