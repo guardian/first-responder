@@ -1,4 +1,4 @@
-@(title: String, calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus])(content: Html)(implicit flash: Flash)
+@(title: String, callouts: Seq[Callout], calloutName: Option[String], moderationStatus: Option[models.ModerationStatus])(content: Html)(implicit flash: Flash)
 
 <!DOCTYPE html>
 
@@ -27,7 +27,7 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    @callout_nav(calloutName,callouts,moderationStatus)
+                    @callout_nav(callouts, calloutName, moderationStatus)
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>

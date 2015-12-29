@@ -1,6 +1,6 @@
-@(calloutName: String, callouts: Seq[Callout], contributions: Seq[Contribution], moderationStatus: models.ModerationStatus)(implicit flash: Flash)
+@(callouts: Seq[Callout], calloutName: Option[String], contributions: Seq[Contribution], moderationStatus: models.ModerationStatus)(implicit flash: Flash)
 
-@main("#" + calloutName,calloutName, callouts, Some(moderationStatus)) {
+@main(calloutName.map(c => s"#$c").getOrElse("First Responder"), callouts, calloutName, Some(moderationStatus)) {
 
     <div class="col-sm-12 col-md-12 main no-padding">
         <div class="main-content">

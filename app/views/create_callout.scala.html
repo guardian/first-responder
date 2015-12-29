@@ -1,8 +1,8 @@
-@(calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus], form: Form[controllers.Forms.CreateCalloutData])(implicit messages: Messages, flash: Flash)
+@(callouts: Seq[Callout], form: Form[controllers.Forms.CreateCalloutData])(implicit messages: Messages, flash: Flash)
 
 @implicitFieldConstructor = @{ b3.horizontal.fieldConstructor("col-md-4", "col-md-8") }
 
-@main("New callout", calloutName, callouts, moderationStatus ) {
+@main("New callout", callouts, calloutName = None, moderationStatus = None) {
 
     <div class="col-xs-12" style="height:50px;"></div>
     <div class="row">
