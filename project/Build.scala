@@ -22,7 +22,7 @@ object FirstResponderBuild extends Build {
       scalaVersion := "2.11.7",
       scalacOptions ++= Seq("-feature", "-deprecation"),
       resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases",
-        libraryDependencies ++= Seq(
+      libraryDependencies ++= Seq(
         ws,
         "com.amazonaws" % "aws-java-sdk-dynamodb" % Versions.awsSdk,
         "com.amazonaws" % "aws-java-sdk-s3" % Versions.awsSdk,
