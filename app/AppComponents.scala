@@ -6,7 +6,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.s3.AmazonS3Client
 import com.gu.googleauth.GoogleAuthConfig
 import controllers.{ Api, Webhooks, Auth, Application }
-import formstack.{ DummyFormStack, FormstackEmbedder, FormstackWebhookHandler, FormstackFormCreator }
+import formstack.{ DummyFormCreator, FormstackEmbedder, FormstackWebhookHandler, FormstackFormCreator }
 import mailgun.MailgunWebhookHandler
 import org.joda.time.Duration
 import play.api.ApplicationLoader.Context
@@ -72,11 +72,11 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   val formstackOauthToken = mandatoryConfigString("formstack.oauthToken")
   val formstackFormCreator = {
-
     if (environment.mode == Mode.Prod) {
       val baseUrl = mandatoryConfigString("baseUrl")
       new FormstackFormCreator(wsApi, webhooksKey, formstackOauthToken, baseUrl)
-    } else { new DummyFormStack }
+    } else
+      new DummyFormCreator
   }
   val formstackWebhookHandler = new FormstackWebhookHandler(wsApi, dynamo)
   val formstackEmbedder = new FormstackEmbedder(wsApi, formstackOauthToken)
