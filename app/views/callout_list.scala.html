@@ -1,10 +1,10 @@
 @(callouts: Seq[Callout])
 
-  @callouts.map { c =>
-	<li>
+@callouts.map { c =>
+    <li>
         <a href="@routes.Application.showCalloutJustIn(c.hashtag)">
             <span>#@c.hashtag</span>
             <span class="datetime">@c.createdAt</span>
         </a>
-	</li>  
-  } 
+    </li>
+}

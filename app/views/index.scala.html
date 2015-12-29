@@ -3,49 +3,41 @@
 @main("#" + calloutName,calloutName, callouts, Some(moderationStatus)) {
 
     <div class="col-sm-12 col-md-12 main no-padding">
-      <div class="main-content">
-        <div class="row contribution-list">
-        <div class="col-md-12">
-        <div class="row">
-          @contributions.map { c =>
-            <a class="trail col-xs-12 col-sm-6 col-md-3 col-lg-3 no-padding" href="@routes.Application.showContribution(c.hashtag, c.id)">
-                <div class="trail-content">
-                @if(c.attachments.isEmpty) {
-                   <div class="body">
-                    <div>@c.body</div>
-                   </div>
-                } else {
-
-
-                   @c.attachments.headOption.map { a =>
-                    @if(a.mimeType == "image/jpeg" || a.mimeType == "image/png" || a.mimeType == "image/gif") {
-                        <div class="image" style="background-image: url(@a.url)">
-
-                        </div>
+        <div class="main-content">
+            <div class="row contribution-list">
+                <div class="col-md-12">
+                    <div class="row">
+                    @contributions.map { c =>
+                        <a class="trail col-xs-12 col-sm-6 col-md-3 col-lg-3 no-padding" href="@routes.Application.showContribution(c.hashtag, c.id)">
+                            <div class="trail-content">
+                                @if(c.attachments.isEmpty) {
+                                    <div class="body">
+                                        <div>@c.body</div>
+                                    </div>
+                                } else {
+                                    @c.attachments.headOption.map { a =>
+                                        @if(a.mimeType == "image/jpeg" || a.mimeType == "image/png" || a.mimeType == "image/gif") {
+                                            <div class="image" style="background-image: url(@a.url)"></div>
+                                        }
+                                        @if(a.mimeType == "video/quicktime" || a.mimeType == "video/mp4") {
+                                            <div class="image video-play" ></div>
+                                        }
+                                    }
+                                }
+                                <div class="caption">
+                                    @if(c.contributor.email.isEmpty && c.contributor.phone.isEmpty) {
+                                        <p><i>Anonymous</i></p>
+                                    } else {
+                                        <p>@c.contributor.email  @c.contributor.phone</p>
+                                    }
+                                </div>
+                            </div>
+                        </a>
                     }
-                    @if(a.mimeType == "video/quicktime" || a.mimeType == "video/mp4") {
-                        <div class="image video-play" >
-
-                        </div>
-                    }
-
-                  }
-
-                }
-                <div class="caption">
-                    @if(c.contributor.email.isEmpty && c.contributor.phone.isEmpty) {
-                        <p><i>Anonymous</i></p>
-                    }else {
-                        <p>@c.contributor.email  @c.contributor.phone</p>
-                    }
-                </div>
-                </div>
-            </a>
-          }
+                    </div>
+                </div><!-- end of col-md-12 -->
+            </div><!-- end of row -->
         </div>
-        </div><!-- end of col-md-12 -->
-        </div><!-- end of row -->
-      </div>
     </div>
 
 }

@@ -5,99 +5,97 @@
 @main("#" + calloutName, calloutName, callouts, Some(c.moderationStatus)) {
 
   <div class="row contribution">
-  	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-		<div class="block">
-		<label for="contributor">Contributor</label>
-  		<p class="hidden">Id: @c.id</p>
-    	<p>From: <a href="mailto:@c.contributor.email">@c.contributor.email</a> @c.contributor.phone</p>
-    	<p>Recieved: @c.createdAt.toString("dd MMM yyyy - HH:mm:ss")</p>
-    	</div>
-    	<div class="block">
-    		<form method="POST" action="@routes.Application.updateNotes(calloutName, c.id)">
-			  <div class="form-group">
-			    <label for="notes">Notes</label>
-			    <textarea  class="form-control" width="100%" id="notes" name="notes" placeholder="Enter some notes here..." rows="10">@c.notes</textarea>
-			  </div>
-			  
-			  <button type="submit" class="btn btn-success">Save</button>
-			</form>
-    	</div>
-  	</div>
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-    	<div class="block">
-    	<label>Message</label> 		
-    	<div class="subject">@c.subject</div>
-    	@if(c.body.isEmpty) {
-		   <div class="body">
-	       	<p>No message body provided.</p>
-	       </div>
-		} else {
-		   <div class="body">
-	       	@c.body
-	       </div>
-        }
-        </div>
-    	<div class="block media">
-    		<label>Attachments</label> 	
-    		@if(c.attachments.isEmpty) {
-    		   <i>No media found</i>
-    		} else {
-    		   
-			   @c.attachments.map { a =>
-				@if(a.mimeType == "image/jpeg" || a.mimeType == "image/png" || a.mimeType == "image/gif") {
-          <div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-						<img src="@a.url" alt=""/>
-					</div>
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+          <div class="block">
+              <label for="contributor">Contributor</label>
+              <p class="hidden">Id: @c.id</p>
+              <p>From: <a href="mailto:@c.contributor.email">@c.contributor.email</a> @c.contributor.phone</p>
+              <p>Recieved: @c.createdAt.toString("dd MMM yyyy - HH:mm:ss")</p>
           </div>
-				}
-				@if(a.mimeType == "video/quicktime" || a.mimeType == "video/mp4") {
-          <div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-						<video controls="true"  src="@a.url">
-						</video>
-					</div>
+          <div class="block">
+              <form method="POST" action="@routes.Application.updateNotes(calloutName, c.id)">
+                  <div class="form-group">
+                      <label for="notes">Notes</label>
+                      <textarea  class="form-control" width="100%" id="notes" name="notes" placeholder="Enter some notes here..." rows="10">@c.notes</textarea>
+                  </div>
+
+                  <button type="submit" class="btn btn-success">Save</button>
+              </form>
           </div>
-				}			
-			  } 
-			}
-    	</div>
-    	
-    </div><!-- end of col-md-12 -->
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+          <div class="block">
+              <label>Message</label>
+              <div class="subject">@c.subject</div>
+              @if(c.body.isEmpty) {
+                  <div class="body">
+                      <p>No message body provided.</p>
+                  </div>
+              } else {
+                  <div class="body">
+                  @c.body
+                  </div>
+              }
+          </div>
+          <div class="block media">
+              <label>Attachments</label>
+              @if(c.attachments.isEmpty) {
+                  <i>No media found</i>
+              } else {
+                  @c.attachments.map { a =>
+                      @if(a.mimeType == "image/jpeg" || a.mimeType == "image/png" || a.mimeType == "image/gif") {
+                          <div class="row">
+                              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                  <img src="@a.url" alt=""/>
+                              </div>
+                          </div>
+                      }
+                      @if(a.mimeType == "video/quicktime" || a.mimeType == "video/mp4") {
+                          <div class="row">
+                              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                  <video controls="true"  src="@a.url">
+                                  </video>
+                              </div>
+                          </div>
+                      }
+                  }
+              }
+          </div>
+
+      </div><!-- end of col-md-12 -->
   </div><!-- end of row -->
   <div class="row action-bar">
-    <div class="col-md-12">
-    	<div class="action-buttons">
-  			<a href="@routes.Application.showCallout(calloutName, c.moderationStatus)" class="btn btn-default btn-lg">Back</a>
-  			@if(c.moderationStatus == ModerationStatus.JustIn){
-  				<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Selected)">
-	  				<button type="submit" class="btn btn-success btn-lg">Select</button>
-	  			</form>
-	  			<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Discarded)">
-	  				<button type="submit" class="btn btn-danger btn-lg">Discard</button>
-  				</form>
-  			}
-  			@if(c.moderationStatus == ModerationStatus.Selected){
-  				<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Ready)">
-	  				<button type="submit" class="btn btn-success btn-lg">Ready</button>
-	  			</form>
-	  			<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Discarded)">
-	  				<button type="submit" class="btn btn-danger btn-lg">Discard</button>
-  				</form>
-  			}
-  			@if(c.moderationStatus == ModerationStatus.Ready){
-	  			<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Discarded)">
-	  				<button type="submit" class="btn btn-danger btn-lg">Discard</button>
-  				</form>
-  			}
-  			@if(c.moderationStatus == ModerationStatus.Discarded){
-	  			<form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Selected)">
-	  				<button type="submit" class="btn btn-success btn-lg">Revive</button>
-  				</form>
-  			}
-
-
-  		</div>
-  	</div><!-- end of col-md-12 -->
+      <div class="col-md-12">
+          <div class="action-buttons">
+              <a href="@routes.Application.showCallout(calloutName, c.moderationStatus)" class="btn btn-default btn-lg">Back</a>
+              @if(c.moderationStatus == ModerationStatus.JustIn){
+                  <form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Selected)">
+                      <button type="submit" class="btn btn-success btn-lg">Select</button>
+                  </form>
+                  <form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Discarded)">
+                      <button type="submit" class="btn btn-danger btn-lg">Discard</button>
+                  </form>
+              }
+              @if(c.moderationStatus == ModerationStatus.Selected){
+                  <form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Ready)">
+                      <button type="submit" class="btn btn-success btn-lg">Ready</button>
+                  </form>
+                  <form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Discarded)">
+                      <button type="submit" class="btn btn-danger btn-lg">Discard</button>
+                  </form>
+              }
+              @if(c.moderationStatus == ModerationStatus.Ready){
+                  <form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Discarded)">
+                      <button type="submit" class="btn btn-danger btn-lg">Discard</button>
+                  </form>
+              }
+              @if(c.moderationStatus == ModerationStatus.Discarded){
+                  <form method="POST" action="@routes.Application.updateModerationStatus(calloutName, c.id, ModerationStatus.Selected)">
+                      <button type="submit" class="btn btn-success btn-lg">Revive</button>
+                  </form>
+              }
+          </div>
+      </div><!-- end of col-md-12 -->
   </div><!-- end of row -->
+
 }

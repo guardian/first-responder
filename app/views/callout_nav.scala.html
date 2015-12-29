@@ -3,22 +3,21 @@
 @import models.ModerationStatus
 
 <ul class="nav navbar-nav">
-
 	<li class="active"><a href="@routes.Application.createCallout"><span>Create new</span></a></li>
-
-@callouts.map { c =>
-	<li @if(c.hashtag == calloutName){ class="active" }>
-	<a href="@routes.Application.showCalloutJustIn(c.hashtag)">
-		<span>#@c.hashtag</span>	
-		<span class="datetime">@c.createdAt</span>
-  </a>
-	</li> 
-} 
-</ul>  
-@if(!calloutName.isEmpty){
-<ul class="nav navbar-nav navbar-right moderation-options">
-@ModerationStatus.values.map { m =>
-  <li @if(moderationStatus.contains(m)){ class="active" } ><a href="@routes.Application.showCallout(calloutName, m)">@m.label</a></li>
-}
+    @callouts.map { c =>
+        <li @if(c.hashtag == calloutName){ class="active" }>
+            <a href="@routes.Application.showCalloutJustIn(c.hashtag)">
+                <span>#@c.hashtag</span>
+                <span class="datetime">@c.createdAt</span>
+            </a>
+        </li>
+    }
 </ul>
+
+@if(!calloutName.isEmpty){
+    <ul class="nav navbar-nav navbar-right moderation-options">
+        @ModerationStatus.values.map { m =>
+            <li @if(moderationStatus.contains(m)){ class="active" } ><a href="@routes.Application.showCallout(calloutName, m)">@m.label</a></li>
+        }
+    </ul>
 }
