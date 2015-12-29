@@ -1,24 +1,23 @@
-@(calloutName: String, callouts: Seq[Callout], moderationStatus: Option[models.ModerationStatus])
+@(callouts: Seq[Callout], calloutName: Option[String], moderationStatus: Option[models.ModerationStatus])
 
 @import models.ModerationStatus
 
 <ul class="nav navbar-nav">
-
-	<li class="active"><a href="/callout/create"><span>Create new</span></a></li>
-
-@callouts.map { c =>
-	<li @if(c.hashtag == calloutName){ class="active" }>
-	<a href="/callout/@c.hashtag">
-		<span>#@c.hashtag</span>	
-		<span class="datetime">@c.createdAt</span>
-  </a>
-	</li> 
-} 
-</ul>  
-@if(!calloutName.isEmpty){
-<ul class="nav navbar-nav navbar-right moderation-options">
-@ModerationStatus.values.map { m =>
-  <li @if(Some(m) == moderationStatus){ class="active" } ><a href="/callout/@calloutName/@m.entryName">@m.label</a></li>
-}
+	<li class="active"><a href="@routes.Application.createCallout"><span>Create new</span></a></li>
+    @callouts.map { c =>
+        <li @if(calloutName.contains(c.hashtag)){ class="active" }>
+            <a href="@routes.Application.showCalloutJustIn(c.hashtag)">
+                <span>#@c.hashtag</span>
+                <span class="datetime">@c.createdAt</span>
+            </a>
+        </li>
+    }
 </ul>
+
+@for(c <- calloutName){
+    <ul class="nav navbar-nav navbar-right moderation-options">
+        @ModerationStatus.values.map { m =>
+            <li @if(moderationStatus.contains(m)){ class="active" } ><a href="@routes.Application.showCallout(c, m)">@m.label</a></li>
+        }
+    </ul>
 }

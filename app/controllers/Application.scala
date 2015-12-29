@@ -17,7 +17,7 @@ class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCrea
   def index = AuthAction { implicit request =>
     val callouts = dynamo.findCallouts()
     val contributions = dynamo.findLatestJustInContributions()
-    Ok(views.html.index("", callouts, contributions, ModerationStatus.JustIn))
+    Ok(views.html.index(callouts, None, contributions, ModerationStatus.JustIn))
   }
 
   def showCalloutJustIn(hashtag: String) = showCallout(hashtag, ModerationStatus.JustIn)
@@ -25,20 +25,20 @@ class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCrea
   def showCallout(hashtag: String, status: ModerationStatus) = AuthAction { implicit request =>
     val callouts = dynamo.findCallouts()
     val contributions = dynamo.findContributionsByHashtagAndStatus(hashtag, status)
-    Ok(views.html.index(hashtag, callouts, contributions, status))
+    Ok(views.html.index(callouts, Some(hashtag), contributions, status))
   }
 
   def createCalloutPage = AuthAction { implicit request =>
     val callouts = dynamo.findCallouts()
 
-    Ok(views.html.create_callout("", callouts, None, Forms.createCalloutForm))
+    Ok(views.html.create_callout(callouts, Forms.createCalloutForm))
   }
 
   def createCallout = AuthAction.async { implicit request =>
 
     Forms.createCalloutForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful(BadRequest(views.html.create_callout("", dynamo.findCallouts(), None, formWithErrors)))
+        Future.successful(BadRequest(views.html.create_callout(dynamo.findCallouts(), formWithErrors)))
       },
       calloutForm => {
         formCreator.createForm(calloutForm.hashtag) map { formstackId =>
@@ -54,7 +54,7 @@ class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCrea
     dynamo.findContribution(hashtag, id) match {
       case Some(contribution) =>
         val callouts = dynamo.findCallouts()
-        Ok(views.html.contribution(hashtag, callouts, contribution))
+        Ok(views.html.contribution(callouts, contribution))
       case None => NotFound
     }
 
