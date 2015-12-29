@@ -1,6 +1,5 @@
 package formstack
 
-import play.api.libs.json._
 import play.api.libs.ws.WSAPI
 import play.twirl.api.Html
 
