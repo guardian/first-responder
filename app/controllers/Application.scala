@@ -42,7 +42,7 @@ class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCrea
       },
       calloutForm => {
         formCreator.createForm(calloutForm.hashtag) map { formstackId =>
-          val callout = Callout(hashtag = calloutForm.hashtag, description = calloutForm.description, formstackId = Some(formstackId))
+          val callout = Callout.create(hashtag = calloutForm.hashtag, description = calloutForm.description, formstackId = Some(formstackId))
           dynamo.save(callout)
           Redirect(routes.Application.showCalloutJustIn(calloutForm.hashtag)).flashing("info" -> "Successfully created a new callout!")
         }

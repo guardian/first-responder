@@ -102,7 +102,7 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
     contributions.updateItem(
       new PrimaryKey(
         "hashtag", contribution.hashtag,
-        "createdAt", contribution.createdAt.withZone(DateTimeZone.UTC).toString),
+        "rangekey", contribution.rangeKey),
       new AttributeUpdate("moderationStatus").put(newStatus.entryName)
     )
     contribution.copy(moderationStatus = newStatus)
@@ -116,7 +116,7 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
     contributions.updateItem(
       new PrimaryKey(
         "hashtag", contribution.hashtag,
-        "createdAt", contribution.createdAt.withZone(DateTimeZone.UTC).toString),
+        "rangekey", contribution.rangeKey),
       attributeUpdate
     )
     contribution.copy(notes = Some(newNotes))
@@ -138,17 +138,18 @@ object Dynamo {
   }
 
   implicit val calloutCodec: DynamoCodec[Callout] = new DynamoCodec[Callout] {
-    override def toItem(callout: Callout): Item = {
+    def toItem(callout: Callout): Item = {
       new Item()
-        .withPrimaryKey("hashtag", callout.hashtag)
+        .withPrimaryKey("hashtag", callout.hashtag, "rangekey", callout.rangeKey)
         .withString("createdAt", callout.createdAt.withZone(DateTimeZone.UTC).toString)
         .withOptString("description", callout.description)
         .withOptString("formstackId", callout.formstackId)
     }
 
-    override def fromItem(item: Item): Callout = {
+    def fromItem(item: Item): Callout = {
       Callout(
         hashtag = item.getString("hashtag"),
+        rangeKey = item.getString("rangekey"),
         createdAt = new DateTime(item.getString("createdAt")).withZone(DateTimeZone.UTC),
         description = Option(item.getString("description")),
         formstackId = Option(item.getString("formstackId"))
@@ -157,11 +158,11 @@ object Dynamo {
   }
 
   implicit val contributionCodec: DynamoCodec[Contribution] = new DynamoCodec[Contribution] {
-    override def toItem(contribution: Contribution): Item = {
+    def toItem(contribution: Contribution): Item = {
       val attachments: java.util.List[String] =
         contribution.attachments.map(a => Json.stringify(Json.toJson(a))).asJava
       new Item()
-        .withPrimaryKey("hashtag", contribution.hashtag)
+        .withPrimaryKey("hashtag", contribution.hashtag, "rangekey", contribution.rangeKey)
         .withString("id", contribution.id)
         .withMap("contributor", contributor2map(contribution.contributor))
         .withString("channel", contribution.channel.toString)
@@ -173,10 +174,11 @@ object Dynamo {
         .withOptString("notes", contribution.notes)
     }
 
-    override def fromItem(item: Item): Contribution = {
+    def fromItem(item: Item): Contribution = {
       val attachments = item.getList[String]("attachments").asScala.map(j => Json.parse(j).as[Attachment])
       Contribution(
         hashtag = item.getString("hashtag"),
+        rangeKey = item.getString("rangekey"),
         id = item.getString("id"),
         contributor = Option(item.getMap[String]("contributor")).map(map2contributor).getOrElse(Contributor.Anonymous),
         channel = Channel.withName(item.getString("channel")),

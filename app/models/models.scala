@@ -1,5 +1,7 @@
 package models
 
+import java.util.UUID
+
 import enumeratum.EnumEntry.Snakecase
 import org.joda.time.{ DateTimeZone, DateTime }
 import play.api.libs.json._
@@ -15,12 +17,22 @@ import enumeratum._
  */
 case class Callout(
   hashtag: String,
-  createdAt: DateTime = DateTime.now,
+  rangeKey: String,
+  createdAt: DateTime,
   description: Option[String],
   formstackId: Option[String])
 
 object Callout {
   implicit val jsonFormat = Json.format[Callout]
+
+  /**
+   * Create a new callout. The callout's `createdAt` will be set to the current time.
+   */
+  def create(hashtag: String, description: Option[String], formstackId: Option[String]): Callout = {
+    val createdAt = DateTime.now.withZone(DateTimeZone.UTC)
+    val rangeKey = s"${createdAt}_${UUID.randomUUID()}"
+    Callout(hashtag, rangeKey, createdAt, description, formstackId)
+  }
 
   // TODO some kind of constant "unknown/other" callout?
 }
@@ -71,20 +83,44 @@ object ModerationStatus extends Enum[ModerationStatus] with PlayEnum[ModerationS
  *
  * I wanted to call it Response but the inevitable name clashes would be too painful.
  *
- * `hashtag` is the hash key in DynamoDB, and `createdAt` (stored as a UTC ISO string) is the range key.
+ * `hashtag` is the hash key in DynamoDB, and `rangeKey` (`createdAt` concatentated with `id`) is the range key.
  *
  */
 case class Contribution(
   hashtag: String,
-  id: String = java.util.UUID.randomUUID.toString,
+  rangeKey: String,
+  id: String,
   contributor: Contributor,
   channel: Channel,
-  createdAt: DateTime = DateTime.now.withZone(DateTimeZone.UTC),
+  createdAt: DateTime,
   subject: Option[String],
   body: String,
   attachments: Seq[Attachment],
-  moderationStatus: ModerationStatus = ModerationStatus.JustIn,
+  moderationStatus: ModerationStatus,
   notes: Option[String])
+
 object Contribution {
   implicit val jsonFormat = Json.format[Contribution]
+
+  /**
+   * Create a new contribution.
+   * It will be given a randomly generated ID,
+   * its createdAt will be set to the current time,
+   * and it will have "just in" moderation status.
+   */
+  def create(
+    hashtag: String,
+    contributor: Contributor,
+    channel: Channel,
+    subject: Option[String],
+    body: String,
+    attachments: Seq[Attachment],
+    notes: Option[String]): Contribution = {
+    val id = UUID.randomUUID().toString
+    val createdAt = DateTime.now.withZone(DateTimeZone.UTC)
+    val rangeKey = s"${createdAt}_${id}"
+    val moderationStatus = ModerationStatus.JustIn
+    Contribution(hashtag, rangeKey, id, contributor, channel, createdAt, subject, body, attachments, moderationStatus, notes)
+  }
+
 }

@@ -8,7 +8,7 @@ import twilio.TwilioWebhookParser.Payload
 class TwilioWebhookHandler(dynamo: Dynamo) {
 
   def handlePayload(payload: Payload): Contribution = {
-    val contribution = Contribution(
+    val contribution = Contribution.create(
       hashtag = extractHashtag(payload),
       contributor = Contributor(email = None, phone = Some(payload.from)),
       channel = Channel.SMS,

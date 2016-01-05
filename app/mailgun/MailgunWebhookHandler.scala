@@ -22,7 +22,7 @@ class MailgunWebhookHandler(ws: WSAPI, mailgunApiKey: String, s3: S3, dynamo: Dy
     val fContribution = for {
       attachments <- copyAttachmentsToS3(validAttachments)
     } yield {
-      Contribution(
+      Contribution.create(
         hashtag = emailAddressToHashtag(payload.to),
         contributor = Contributor(email = Some(payload.from), phone = None),
         channel = Channel.Mail,
