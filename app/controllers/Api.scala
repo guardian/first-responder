@@ -18,7 +18,7 @@ class Api(validApiKey: String, dynamo: Dynamo, formCreator: FormCreator) extends
         Future.successful(BadRequest("Invalid POST data"))
       }, { createCalloutData =>
         formCreator.createForm(createCalloutData.hashtag) map { formstackId =>
-          val callout = Callout(hashtag = createCalloutData.hashtag, description = createCalloutData.description, formstackId = Some(formstackId))
+          val callout = Callout.create(hashtag = createCalloutData.hashtag, description = createCalloutData.description, formstackId = Some(formstackId))
           dynamo.save(callout)
           Created
         }

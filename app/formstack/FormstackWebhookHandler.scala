@@ -18,7 +18,7 @@ class FormstackWebhookHandler(ws: WSAPI, dynamo: Dynamo) {
       }
     }
     attachments map { a =>
-      val contribution = Contribution(
+      val contribution = Contribution.create(
         hashtag = hashtag,
         contributor = Contributor(email = payload.email, phone = None),
         channel = Channel.Form,
