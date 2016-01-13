@@ -82,7 +82,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   val formstackEmbedder = new FormstackEmbedder(wsApi, formstackOauthToken)
 
   val messagesApi: MessagesApi = new DefaultMessagesApi(environment, configuration, new DefaultLangs(configuration))
-  val appController = new Application(dynamo, formstackEmbedder, formstackFormCreator, messagesApi, googleAuthConfig)
+  val appController = new Application(dynamo, formstackEmbedder, formstackFormCreator, messagesApi, googleAuthConfig, configuration.getString("twilio.phoneNumber") getOrElse "No phone number")
   val authController = new Auth(googleAuthConfig, wsApi)
   val webhooksController = new Webhooks(webhooksKey, mailgunWebhookHandler, twilioWebhookHandler, formstackWebhookHandler)
   val apiController = new Api(apiKey, dynamo, formstackFormCreator)

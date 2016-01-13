@@ -1,4 +1,4 @@
-@(callout: Callout, formstackEmbed: Option[Html])
+@(callout: Callout, formstackEmbed: Option[Html], phoneNumber: String)
 
 <!DOCTYPE html>
 
@@ -38,7 +38,7 @@
                                 <div class="info">Any image and video attachments will be received</div>
                             </p>
                             <p>
-                                <a class="btn btn-primary" href="sms:+441464254016&body=@callout.hashtag" target="_blank">Text us +44 (0)1464 254016</a>
+                                <a class="btn btn-primary" href="sms:+@phoneNumber&body=@callout.hashtag" target="_blank">Text us +@phoneNumber</a>
                                 <div class="info">Add "<b>@callout.hashtag</b>"" as the first word of your text message</div>
                             </p>
                             <p>
