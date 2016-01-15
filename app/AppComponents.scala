@@ -62,8 +62,10 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
     val mailgunApiKey = mandatoryConfigString("mailgun.apiKey")
     new MailgunWebhookHandler(wsApi, mailgunApiKey, s3, dynamo)
   }
+  val emailDomain = configuration.getString("emailDomain") getOrElse "No domain set up"
 
   val twilioWebhookHandler = new TwilioWebhookHandler(dynamo)
+  val twilioPhoneNumber = configuration.getString("twilio.phoneNumber") getOrElse "No phone number"
 
   /** The key that we use to protect our webhook endpoints from unauthorised requests */
   val webhooksKey = mandatoryConfigString("webhooksKey")
@@ -82,7 +84,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   val formstackEmbedder = new FormstackEmbedder(wsApi, formstackOauthToken)
 
   val messagesApi: MessagesApi = new DefaultMessagesApi(environment, configuration, new DefaultLangs(configuration))
-  val appController = new Application(dynamo, formstackEmbedder, formstackFormCreator, messagesApi, googleAuthConfig, configuration.getString("twilio.phoneNumber") getOrElse "No phone number")
+  val appController = new Application(dynamo, formstackEmbedder, formstackFormCreator, messagesApi, googleAuthConfig, twilioPhoneNumber, emailDomain)
   val authController = new Auth(googleAuthConfig, wsApi)
   val webhooksController = new Webhooks(webhooksKey, mailgunWebhookHandler, twilioWebhookHandler, formstackWebhookHandler)
   val apiController = new Api(apiKey, dynamo, formstackFormCreator)
