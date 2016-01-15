@@ -7,12 +7,11 @@ import play.api.i18n.{ MessagesApi, I18nSupport }
 import play.api.mvc._
 import play.twirl.api.Html
 import store.Dynamo
-import twilio.TwilioWebhookHandler
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCreator: FormCreator, val messagesApi: MessagesApi, val authConfig: GoogleAuthConfig, phoneNumber: String) extends Controller with AuthActions
+class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCreator: FormCreator, val messagesApi: MessagesApi, val authConfig: GoogleAuthConfig, phoneNumber: String, emailDomain: String) extends Controller with AuthActions
     with I18nSupport {
 
   def index = AuthAction { implicit request =>
@@ -116,7 +115,7 @@ class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCrea
           formstackEmbedder.getEmbedCode(id).map(Some(_))
         }
         formstackEmbed.map { embed =>
-          Ok(views.html.callout_widget(callout, embed, phoneNumber = phoneNumber))
+          Ok(views.html.callout_widget(callout, embed, phoneNumber = phoneNumber, emailDomain = emailDomain))
         }
       case None => Future.successful(NotFound)
     }

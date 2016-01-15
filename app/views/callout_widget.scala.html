@@ -1,4 +1,4 @@
-@(callout: Callout, formstackEmbed: Option[Html], phoneNumber: String)
+@(callout: Callout, formstackEmbed: Option[Html], phoneNumber: String, emailDomain: String)
 
 <!DOCTYPE html>
 
@@ -34,7 +34,7 @@
                         </div>
                         <div class="content">
                             <p>
-                                <a class="btn btn-primary" href="mailto:@callout.hashtag@@sandboxb581b83d5fc3420982d2af09f3b2f7df.mailgun.org" >Send us an email</a>
+                                <a class="btn btn-primary" href="mailto:@callout.hashtag@@@emailDomain" >Send us an email</a>
                                 <div class="info">Any image and video attachments will be received</div>
                             </p>
                             <p>
