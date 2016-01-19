@@ -44,6 +44,25 @@
         "Roles": [{"Ref": "RootRole" }]
       }
     },
+    "UploadToS3Policy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "s3-get-and-put-objects",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetObject", "s3:PutObject", "s3:PutObjectAcl"],
+              "Resource": [
+                "arn:aws:s3::*:first-responder-attachments-prod/*",
+                "arn:aws:s3::*:first-responder-attachments-prod"
+              ]
+            }
+          ]
+        },
+        "Roles": [{"Ref": "RootRole" }]
+      }
+    },
     "DynamoDBPolicy": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
