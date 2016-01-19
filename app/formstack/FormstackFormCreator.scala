@@ -42,15 +42,15 @@ class FormstackFormCreator(ws: WSAPI, webhookKey: String, formstackOAuthToken: S
       "fields" -> Json.arr(
         Json.obj(
           "field_type" -> "email",
-          "label" -> "Email"
+          "label" -> "Your email address"
         ),
         Json.obj(
           "field_type" -> "textarea",
-          "label" -> "Tell me something I don't know"
+          "label" -> "Your contribution"
         ),
         Json.obj(
           "field_type" -> "file",
-          "label" -> "Give up the goods",
+          "label" -> "Attach a photo or video",
           "attributes" -> Json.obj(
             "types" -> "jpg,jpeg,gif,png,bmp,txt,mp3,mp4,aac,wav,au,wmv,avi,mpg,mpeg"
           )
