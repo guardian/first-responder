@@ -5,10 +5,8 @@ import java.util
 import com.amazonaws.services.dynamodbv2.document.spec.{ ScanSpec, QuerySpec }
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap
 import com.amazonaws.services.dynamodbv2.document.{ AttributeUpdate, PrimaryKey, Item, DynamoDB }
-import com.amazonaws.services.dynamodbv2.model._
 import models._
 import org.joda.time.{ DateTimeZone, DateTime }
-import play.api.Logger
 import play.api.libs.json.Json
 import scala.collection.JavaConverters._
 
@@ -71,11 +69,11 @@ class Dynamo(db: DynamoDB, contributionsTableName: String, calloutsTableName: St
    */
   def findNextContributionOlderThan(contribution: Contribution): Option[Contribution] = {
     val query = new QuerySpec()
-      .withKeyConditionExpression("hashtag = :h and createdAt < :c")
+      .withKeyConditionExpression("hashtag = :h and rangekey < :r")
       .withFilterExpression("moderationStatus = :s")
       .withValueMap(new ValueMap()
         .withString(":h", contribution.hashtag)
-        .withString(":c", contribution.createdAt.withZone(DateTimeZone.UTC).toString)
+        .withString(":r", contribution.rangeKey)
         .withString(":s", contribution.moderationStatus.entryName))
       .withScanIndexForward(false) // order by increasing age
       .withMaxResultSize(1)
