@@ -115,7 +115,7 @@ class Application(dynamo: Dynamo, formstackEmbedder: FormstackEmbedder, formCrea
           formstackEmbedder.getEmbedCode(id).map(Some(_))
         }
         formstackEmbed.map { embed =>
-          Ok(views.html.callout_widget(callout, embed, phoneNumber = phoneNumber, emailDomain = emailDomain))
+          Ok(views.html.callout_widget_loader(callout, embed, phoneNumber = phoneNumber, emailDomain = emailDomain))
         }
       case None => Future.successful(NotFound)
     }
