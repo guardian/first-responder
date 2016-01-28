@@ -1,0 +1,45 @@
+@(callout: Callout, formstackEmbed: Option[Html], phoneNumber: String, emailDomain: String)
+
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Callout Widget Loader</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/first-responder-assets/style.css">
+        
+        <script type="txt/javascript">
+
+        function copyToClipboard() 
+        {
+            holdtext.innerText = copytext.innerText;
+            Copied = holdtext.createTextRange();
+            Copied.execCommand("Copy");
+        }
+
+        </script>
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                <p style="color:#333333; margin-top:50px;">Embed preview:</p>       
+                <IFRAME style="margin-bottom:15px;" height="230px" frameborder="0" srcdoc="@Txt(callout_widget(callout,formstackEmbed,phoneNumber,emailDomain).toString))"></IFRAME>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                <p style="color:#333333">Copy and paste this copy into Composer and select as embed:</p>
+                <textarea type="text" rows="9" cols="100" style="color: #333333">@Txt(callout_widget(callout,formstackEmbed,phoneNumber,emailDomain).toString)</textarea>
+            </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+
