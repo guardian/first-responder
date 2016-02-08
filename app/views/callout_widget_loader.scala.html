@@ -34,12 +34,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                <p style="color:#333333"><b>Now embed your callout:</b> Copy and paste this copy into Composer and select as embed:</p>
-                <textarea type="text" rows="9" cols="100" style="color: #333333">@Txt(callout_widget(callout,formstackEmbed,phoneNumber,emailDomain).toString)</textarea>
+                <p style="color:#333333"><b>Now embed your callout:</b> Copy and paste this into Composer and select as embed:</p>
+                <textarea type="text" rows="9" cols="100" style="margin-bottom:15px; color: #333333">@Txt(callout_widget(callout,formstackEmbed,phoneNumber,emailDomain).toString)</textarea>
             </div>
             </div>
         </div>
-       
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                <p style="color:#333333"><b>If you want use the related formstack:</b> Copy and paste this into Composer:</p>
+                <textarea type="text" rows="9" cols="100" style="color: #333333">@formstackEmbed.map( x => Txt(x.toString))</textarea>
+            </div>
+            </div>
+        </div>
     </body>
 </html>
 
