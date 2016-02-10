@@ -44,6 +44,24 @@
         "Roles": [{"Ref": "RootRole" }]
       }
     },
+    "UploadToS3Policy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "upload-to-s3",
+        "PolicyDocument": {
+          "Statement": [{
+            "Effect": "Allow",
+            "Action": [
+              "s3:PutObject",
+              "s3:PutObjectAcl",
+              "s3:list*"
+            ],
+            "Resource": "arn:aws:s3:::first-responder-attachments-prod/*"
+          }]
+        },
+        "Roles": [{"Ref": "RootRole" }]
+      }
+    },
     "DynamoDBPolicy": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
