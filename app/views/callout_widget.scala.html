@@ -7,7 +7,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/first-responder-assets/style.css">
+        <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/first-responder-assets/style-v2.css">
     </head>
     <body>
         <div class="gary-widget">
@@ -22,29 +22,28 @@
                 <div class="gary-widget__btns">
                     <div class="gary-widget__btn">
                         <a class="gary-widget__btn-link" href="mailto:@callout.hashtag@@@emailDomain">
-                            <svg width="30px" height="30px" viewBox="0 0 30 30"><path fill="#FFF" d="M23.2 12.5l-.5-.5-7.5 3.7L7.6 12l-.4.6 7.9 6.7 8.1-6.8zm1.6-6.4H5.1l-2 3.4v12.8l2.1 1.6h19.7l2-1.6V9.5l-2.1-3.4zm-.7 14.8H5.9V9.1h18.3v11.8z"/></svg>
-                            <span class="gary-widget__btn-text">Email</span>
+                            <b>Email:</b> <span class="gary-widget__btn-text">@callout.hashtag@@@emailDomain</span>
                         </a>
                     </div>
+                    <div class="gary-widget__info">
+                    Add photos and videos as attachments
+                    </div>
+
                     <div class="gary-widget__btn">
                         <a class="gary-widget__btn-link" href="sms:+@phoneNumber&body=@callout.hashtag" target="_blank">
-                            <svg width="30px" height="30px" viewBox="0 0 30 30"><path fill="#FFF" d="M22.7 24.6V5.2l-1.8-1.8h-12l-1.6 2v19.4l1.6 1.8h12l1.8-2zm-12.5-3.3V6h9.7v15.3h-9.7zm6.4 2.6c0 .9-.7 1.6-1.6 1.6-.9 0-1.6-.7-1.6-1.6 0-.9.7-1.6 1.6-1.6.9 0 1.6.7 1.6 1.6z"/></svg>
-                            <span class="gary-widget__btn-text">Text</span>
+                            <b>SMS:</b> <span class="gary-widget__btn-text">+@phoneNumber</span>
                         </a>
                     </div>
+                    <div class="gary-widget__info">
+                        Add "<b>@callout.hashtag</b>" as the first word of the message. UK number - standard network charges apply
+                    </div>
+
                     <div class="gary-widget__btn">
                         <a class="gary-widget__btn-link" href="https://twitter.com/intent/tweet?text=@@guardianwitness%20%23@callout.hashtag" target="_blank">
-                            <svg width="30px" height="30px" viewBox="0 0 30 30"><path fill="#FFF" d="M24.2 10.5c0 .2.1.4.1.6 0 6-4.6 12.9-12.9 12.9-2.5 0-5-.7-6.9-2 .3.1.7 0 1.1.1 2.1 0 4.1-.7 5.6-2-2 0-3.6-1.3-4.2-3.1.7.2 1.3.1 2.1-.1-2-.5-3.7-2.2-3.7-4.5.3.2 1.6.6 2 .5-1.2-.7-2-2.3-2-3.8 0-.8.3-1.6.6-2.3 2.4 2.8 5.5 4.6 9.3 4.8-.1-.3-.1-.8-.1-1 0-2.5 2-4.5 4.5-4.5 1.4 0 2.5.6 3.3 1.4 1-.1 2-.7 2.9-1.1-.3 1.1-1 1.9-2 2.5 1-.1 1.7-.4 2.6-.7-.6.8-1.4 1.6-2.3 2.3z"/></svg>
-                            <span class="gary-widget__btn-text">Tweet</span>
+                            <b>Tweet:</b> <span class="gary-widget__btn-text">@@guardianwitness #@callout.hashtag</span>
                         </a>
                     </div>
-                </div>
-                <div class="gary-widget__info" style="margin-top:5px;">
-                    Email: Add photos and videos as attachments
-                </div>
-                <div class="gary-widget__info" style="margin-top:5px;">
-                    SMS: Add "<b>@callout.hashtag</b>" as the first word of the message. UK number - standard network charges apply
-                </div>
+                </div>              
             </div>
         </div>
     </body>
