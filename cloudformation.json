@@ -14,6 +14,11 @@
       "Description": "Environment name",
       "Type": "String",
       "Default": "CODE"
+    },
+    "AMI": {
+      "Description": "AMI ID",
+      "Type": "String",
+      "Default": "ami-6b50e218"
     }
   },
   "Resources": {
@@ -156,7 +161,7 @@
     "LaunchConfig": {
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
-        "ImageId": "ami-2ce4465f",
+        "ImageId": { "Ref": "AMI" },
         "InstanceType": "t2.nano",
         "IamInstanceProfile": { "Ref": "InstanceProfile" },
         "SecurityGroups": [
