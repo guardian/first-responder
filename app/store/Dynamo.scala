@@ -138,7 +138,7 @@ object Dynamo {
   implicit val calloutCodec: DynamoCodec[Callout] = new DynamoCodec[Callout] {
     def toItem(callout: Callout): Item = {
       new Item()
-        .withPrimaryKey("hashtag", callout.hashtag, "rangekey", callout.rangeKey)
+        .withPrimaryKey("hashtag", callout.hashtag.toLowerCase, "rangekey", callout.rangeKey)
         .withString("createdAt", callout.createdAt.withZone(DateTimeZone.UTC).toString)
         .withOptString("description", callout.description)
         .withOptString("formstackId", callout.formstackId)
@@ -160,7 +160,7 @@ object Dynamo {
       val attachments: java.util.List[String] =
         contribution.attachments.map(a => Json.stringify(Json.toJson(a))).asJava
       new Item()
-        .withPrimaryKey("hashtag", contribution.hashtag, "rangekey", contribution.rangeKey)
+        .withPrimaryKey("hashtag", contribution.hashtag.toLowerCase, "rangekey", contribution.rangeKey)
         .withString("id", contribution.id)
         .withMap("contributor", contributor2map(contribution.contributor))
         .withString("channel", contribution.channel.toString)
